@@ -7,11 +7,15 @@ body {
 .navbar {
   font-weight:700;
   letter-spacing: .1rem;
-  font-size: .9rem;
+  font-size: 1.1rem;
 }
 
 .navbar-nav li {
   padding-right: .7rem;
+}
+
+nav .navbar-nav li a{
+  color: white !important;
 }
 
 /* Landing Page */
