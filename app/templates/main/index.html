@@ -2,4 +2,9 @@
 
 {% block content %}
 <h1>Welcome to Nutri-Cart!</h1>
+<form method="POST">
+  {{form.hidden_tag()}}
+  {{form.query()}}
+  {{form.submit()}}
+</form>
 {% endblock %}
