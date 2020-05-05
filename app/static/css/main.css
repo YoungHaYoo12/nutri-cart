@@ -1,0 +1,23 @@
+body {
+  overflow-x:hidden;
+  margin:0;
+}
+
+/* Navigation CSS */
+.navbar {
+  font-weight:700;
+  letter-spacing: .1rem;
+  font-size: .9rem;
+}
+
+.navbar-nav li {
+  padding-right: .7rem;
+}
+
+/* Landing Page */
+#showcase {
+  background-image: url('/static/images/base_background.jpg');
+  background-size:cover;
+  background-position: center;
+  height:100vh;
+}
