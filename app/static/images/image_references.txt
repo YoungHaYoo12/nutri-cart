@@ -2,3 +2,6 @@ Contains URLs for Images
 
 brand_icon.svg:
 https://upload.wikimedia.org/wikipedia/commons/c/c4/Noun_Project_vegetables_icon_1422990_cc.svg
+
+base_background.jpg:
+Photo by Luke Chesser on Unsplash
