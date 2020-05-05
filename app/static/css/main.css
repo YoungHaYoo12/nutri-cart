@@ -25,3 +25,8 @@ nav .navbar-nav li a{
   background-position: center;
   height:100vh;
 }
+
+.content-container {
+  height:100%;
+  width:100%;
+}
