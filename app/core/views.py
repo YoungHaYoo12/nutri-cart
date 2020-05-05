@@ -8,4 +8,4 @@ def index():
   if form.validate_on_submit():
     return redirect(url_for('core.index'))
 
-  return render_template('main/index.html',form=form)
+  return render_template('core/index.html',form=form)
