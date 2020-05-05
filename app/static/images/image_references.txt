@@ -1,6 +1,6 @@
 Contains URLs for Images 
 
-brand_icon.svg:
+brand_icon.png, brand_icon_white.png:
 https://upload.wikimedia.org/wikipedia/commons/c/c4/Noun_Project_vegetables_icon_1422990_cc.svg
 
 base_background.jpg:
