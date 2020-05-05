@@ -24,9 +24,11 @@ nav .navbar-nav li a{
   background-size:cover;
   background-position: center;
   height:100vh;
+  
+  display:flex;
+  flex-direction:column;
 }
 
 .content-container {
-  height:100%;
-  width:100%;
+  flex:1;
 }
