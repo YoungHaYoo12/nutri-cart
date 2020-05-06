@@ -1,10 +1,13 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h1>Welcome to Nutri-Cart!</h1>
-<form method="POST">
-  {{form.hidden_tag()}}
-  {{form.query()}}
-  {{form.submit()}}
-</form>
+<div class="index-page-wrapper">
+  <div class="search-box">
+    <form method="POST">
+      {{form.hidden_tag()}}
+        {{form.query(class="text-input", placeholder="What Food Do You Wish To Search For?")}}
+        {{form.submit(class='submit-input btn btn-outline-info')}}
+    </form>
+  </div>
+</div>
 {% endblock %}
