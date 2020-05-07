@@ -33,3 +33,42 @@ nav .navbar-nav li a{
 .content-container {
   flex:1;
 }
+
+/* ---------- Index.HTML STYLING ---------- */
+.index-page-wrapper {
+  height:100%;
+  width:100%;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.search-box {
+  width:50%;
+  position:relative;
+
+}
+
+.search-box input[type="text"]{
+  padding:10px;
+  box-sizing: border-box;
+  background: rgba(0,0,0,0.3);
+  border: 2px solid #fff;
+  border-radius:10px;
+
+  font-size:18px;
+  color:#fff;
+  flex:9;
+  margin-right:3px;
+}
+
+.search-box input[type="submit"] {
+  flex:1;
+  border-radius:10px;
+}
+
+.search-box form {
+  display:flex;
+  justify-content:space-between;
+}
