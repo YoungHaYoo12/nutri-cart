@@ -70,3 +70,51 @@ nav .navbar-nav li a{
   display:flex;
   justify-content:space-between;
 }
+
+/* ---------- List.HTML STYLING ---------- */
+.foods-list-wrapper {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+
+.foods-list-wrapper .food-entries {
+  display:flex;
+  justify-content:space-evenly;
+  font-family: 'Playfair Display', serif;
+  margin:10%;
+  margin-top:0;
+}
+
+.foods-list-wrapper .food-entries .entry {
+  color:white;
+  border:solid black 1px;
+  display:flex;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.foods-list-wrapper .food-entries .entry .text-container {
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  padding:1%;
+  text-align:center;
+  justify-content:center;
+  align-items:center;
+  background: rgba(0,0,0,0.3);
+}
+
+.foods-list-wrapper .food-entries .entry .img-container {
+  flex:2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background: white;
+
+}
+
+.foods-list-wrapper .food-entries .entry .img-container img {
+  max-height:100%;
+  max-width:100%;
+}

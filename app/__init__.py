@@ -14,6 +14,8 @@ def create_app(config_name):
 
   # Register blueprints
   from app.core import core as core_blueprint
+  from app.foods import foods as foods_blueprint
   app.register_blueprint(core_blueprint)
+  app.register_blueprint(foods_blueprint)
 
   return app

@@ -6,6 +6,6 @@ from app.core.forms import SearchForm
 def index():
   form = SearchForm()
   if form.validate_on_submit():
-    return redirect(url_for('core.index'))
+    return redirect(url_for('foods.list',food_name=form.query.data,filter="common"))
 
   return render_template('core/index.html',form=form)

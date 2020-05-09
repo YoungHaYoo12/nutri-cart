@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="foods-list-wrapper">
+
+  <div class="intro-text">
+    <h1 class="text-capitalize">Search Results For {{food_name}}</h1>
+  </div>
+  <!-- Filtering & Search Tool Bar -->
+  <ul class="nav nav-pills nav-fill">
+    <li class="nav-item">
+      <a class="nav-link active" href="{{url_for('core.index')}}">Search Again?</a>
+    </li>
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Category</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="{{url_for('foods.list',food_name=food_name,filter="common")}}">Common Foods</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item" href="{{url_for('foods.list',food_name=food_name,filter="branded")}}">Branded Foods</a>
+      </div>
+    </li>
+  </ul>
+  <!-- SHOW FOODS RESULTING FROM SEARCH TERM -->
+  <div class="food-entries">
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">
+      {% for food in foods %}
+      <div class="col mb-4">
+        <div class="entry h-100 border-primary">
+          <div class="img-container">
+            <img src="{{food.photo.thumb}}" alt="">
+          </div>
+          <div class="text-container">
+            <h6 class="text-capitalize">{{food.food_name}}</h6>
+            <button class="btn btn-info">Add</button>
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
