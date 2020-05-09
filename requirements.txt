@@ -15,6 +15,8 @@ cffi==1.14.0
 chardet==3.0.4
 cleo==0.6.8
 click==7.1.2
+coverage==5.1
+cs50==5.0.4
 curtsies==0.3.1
 cycler==0.10.0
 dephell==0.7.7
@@ -103,6 +105,8 @@ shellingham==1.3.2
 six==1.14.0
 sounddevice==0.3.15
 SQLAlchemy==1.3.16
+sqlparse==0.3.1
+termcolor==1.1.0
 tomlkit==0.5.11
 tqdm==4.45.0
 ujson==1.35
