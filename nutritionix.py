@@ -77,3 +77,7 @@ def get_branded_nutrients(nix_item_id):
   response = requests.get(url_search_item,headers=headers,params=body)
   nutrients = response.json()['foods'][0]
   return nutrients
+
+# Contains nutrient categories to display
+nutrient_categories = ['serving_qty', 'serving_unit','nf_serving_weight_grams', 'nf_calories', 'nf_total_fat',
+'nf_saturated_fat','nf_cholesterol','nf_sodium','nf_total_carbohydrate','nf_dietary_fiber','nf_sugars','nf_protein']
