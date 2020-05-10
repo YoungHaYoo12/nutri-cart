@@ -1,4 +1,4 @@
-from flask import render_template, redirect, url_for,request
+from flask import render_template, redirect, url_for,request,abort
 from app.foods import foods
 from app.foods.forms import FoodServingForm
 from nutritionix import search_item, get_common_nutrients, get_branded_nutrients, nutrient_categories
@@ -13,6 +13,7 @@ def list(food_name,filter):
   if filter == "common":
     foods = search_result['common']
   else:
+    abort(404)
     foods = search_result['branded']
 
   return render_template('foods/list.html',food_name=food_name,foods=foods)
