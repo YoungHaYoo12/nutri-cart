@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="foods-food-wrapper">
+  <div class="container">
+    <div class="jumbotron">
+      <h1 class="display-4 text-capitalize">{{food_info.food_name}}</h1>
+      <div class="btn-group btn-block">
+        <button type="button" class="btn btn-primary btn-lg btn-block">Add</button>
+        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#">Separated link</a>
+        </div>
+      </div>
+
+      <div class="jumbotron-body">
+        <div class="jumbotron-body-text">
+          <!-- Nutrition Facts -->
+          <hr class="my-4">
+          <p class="lead">Calories: {{food_info.nf_calories}}</p>
+          <p class="lead">Total Carbohydrate: {{food_info.nf_total_carbohydrate}}</p>
+          <p class="lead">Protein: {{food_info.nf_protein}}</p>
+          <p class="lead">Sodium: {{food_info.nf_sodium}}</p>
+          <p class="lead">Sugars: {{food_info.nf_sugars}}</p>
+          <p class="lead">Total Fat: {{food_info.nf_total_fat}}</p>
+          <p class="lead">Saturated Fat: {{food_info.nf_saturated_fat}}</p>
+          <p class="lead">Dietary Fiber: {{food_info.nf_dietary_fiber}}</p>
+
+          <!-- Serving Quantity and Unit Form -->
+          <form class="form-inline" method="POST">
+            {{form.hidden_tag()}}
+            <div class="form-group">
+              {{form.serving_qty.label(class="my-1 mr-2")}}
+              {{form.serving_qty(class="form-control mb-2 mr-sm-2")}}
+            </div>
+            <div class="form-group">
+              {{form.serving_unit.label(class="my-1 mr-2")}}
+              {{form.serving_unit(class="custom-select my-1 mr-sm-2")}}
+            </div>
+            <div class="form-group">
+              {{form.submit(class="btn btn-primary my-1")}}
+            </div>
+          </form>
+        </div>
+
+        <div class="jumbotron-body-img">
+          <img class="img-fluid" src="{{food_info.photo.thumb}}" alt="">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

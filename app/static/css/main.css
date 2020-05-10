@@ -118,3 +118,34 @@ nav .navbar-nav li a{
   max-height:100%;
   max-width:100%;
 }
+
+/* ---------- foods/food.html ---------- */
+.foods-food-wrapper {
+  width:100%;
+  height:100%;
+}
+
+.foods-food-wrapper .jumbotron-body {
+  display:flex;
+}
+
+.foods-food-wrapper .jumbotron-body-text {
+  flex:1;
+}
+
+.foods-food-wrapper .jumbotron-body-img {
+  flex:2;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.foods-food-wrapper .jumbotron-body-img img {
+  max-height:100%;
+  max-width:100%;
+  object-fit:contain;
+}
+
+.foods-food-wrapper .jumbotron h1 {
+  text-align:center;
+}

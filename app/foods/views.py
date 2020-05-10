@@ -1,6 +1,10 @@
-from flask import render_template
+from flask import render_template, redirect, url_for,request
 from app.foods import foods
-from nutritionix import search_item
+from app.foods.forms import FoodServingForm
+from nutritionix import search_item, get_common_nutrients, get_branded_nutrients, nutrient_categories
+
+######################################
+# VIEW FUNCTIONS
 
 # List all foods resulting from search, filtered by common and branded foods
 @foods.route('/list/<food_name>/<filter>')
@@ -13,3 +17,80 @@ def list(food_name,filter):
 
   return render_template('foods/list.html',food_name=food_name,foods=foods)
 
+# Detail Page For Common Food
+@foods.route('/common/<food_name>', methods=['GET','POST'])
+@foods.route('/common/<food_name>/<serving_unit>/<serving_qty>',methods=['GET','POST'])
+def common_food(food_name, serving_unit=None, serving_qty=None):
+  # Read in Food Information
+  food_info = get_common_nutrients(food_name)
+  if serving_unit is None:
+    serving_unit = float(food_info['serving_weight_grams'])
+  if serving_qty is None:
+    serving_qty = float(food_info['serving_qty'])
+
+  nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],serving_unit,serving_qty)
+  food_info = update_nutrients(food_info,nutrient_multiplier,nutrient_categories)
+
+  # Form Processing
+  form = FoodServingForm()
+  measures_tuple = get_measures_tuple(food_info)
+  form.serving_unit.choices = measures_tuple
+  if form.validate_on_submit():
+    return redirect(url_for('foods.common_food',food_name=food_info['food_name'],serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
+  elif request.method == 'GET':
+    form.serving_qty.data = float(serving_qty)
+    form.serving_unit.data = str(serving_unit)
+
+  return render_template('foods/food.html',food_info=food_info,form=form)
+
+# Detail Page For Branded Food
+@foods.route('/branded/<nix_item_id>', methods=['GET','POST'])
+@foods.route('/branded/<nix_item_id>/<serving_unit>/<serving_qty>',methods=['GET','POST'])
+def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
+  # Read in Food Information
+  food_info = get_branded_nutrients(nix_item_id)
+  if serving_unit is None:
+    serving_unit = float(food_info['serving_weight_grams'])
+  if serving_qty is None:
+    serving_qty = float(food_info['serving_qty'])
+
+  nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],serving_unit,serving_qty)
+  food_info = update_nutrients(food_info,nutrient_multiplier,nutrient_categories)
+
+  # Form Processing
+  form = FoodServingForm()
+  measures_tuple = get_measures_tuple(food_info)
+  form.serving_unit.choices = measures_tuple
+  if form.validate_on_submit():
+    return redirect(url_for('foods.branded_food',nix_item_id=nix_item_id,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
+  elif request.method == 'GET':
+    form.serving_qty.data = float(serving_qty)
+    form.serving_unit.data = str(serving_unit)
+
+  return render_template('foods/food.html',food_info=food_info,form=form)
+  
+######################################
+# HELPER FUNCTIONS
+
+# Construct tuple of measures (serving weight/qty, measure unit) for a food product 
+def get_measures_tuple(food_info):
+  if food_info['alt_measures'] is None:
+    measures_tuple = [(str(float(food_info['serving_weight_grams'])/float(food_info['serving_qty'])),food_info['serving_unit'])]
+  else:
+    measures_tuple = [(str(float(i['serving_weight'])/float(i['qty'])),i['measure']) for i in food_info['alt_measures']]
+
+  return measures_tuple
+
+# Calculate new nutrient multiplier when serving unit and quantity change
+def get_nutrient_multiplier(original_serving_weight,new_serving_weight, qty):
+  return float(new_serving_weight)/float(original_serving_weight)*float(qty)
+
+# Update nutrient categories by nutrient multiplier when serving unit and quantity change
+def update_nutrients(food_info, nutrient_multiplier, nutrient_categories):
+  for category in nutrient_categories:
+    if type(food_info[category]) != int and type(food_info[category]) != float:
+      continue
+    
+    food_info[category] = food_info[category] * nutrient_multiplier
+  
+  return food_info
