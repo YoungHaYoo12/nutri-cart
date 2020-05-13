@@ -18,7 +18,7 @@ def list(food_name,filter):
     abort(404)
 
   return render_template('foods/list.html',food_name=food_name,foods=foods)
-
+  
 # Detail Page For Common Food
 @foods.route('/common/<food_name>', methods=['GET','POST'])
 @foods.route('/common/<food_name>/<serving_unit>/<serving_qty>',methods=['GET','POST'])
@@ -29,17 +29,15 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
   # 404 exception if food is not in nutritionix database
   if food_info is None:
     abort(404)
+  
+  # If food_info does not have right type of data in a category, set it to a default value
+  clean_food_data(food_info)
 
   if serving_unit is None:
-    try:
-      serving_unit = float(food_info['serving_weight_grams'])
-    except TypeError:
-      serving_unit = 1
+    serving_unit = float(food_info['serving_weight_grams'])
+
   if serving_qty is None:
-    try:
-      serving_qty = float(food_info['serving_qty'])
-    except TypeError:
-      serving_qty = 1
+    serving_qty = float(food_info['serving_qty'])
 
   # catch if serving_unit and serving_qty url parameters are not of the correct type
   try:
@@ -73,17 +71,14 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
   # 404 exception if food is not in nutritionix database
   if food_info is None:
     abort(404)
+  
+  clean_food_data(food_info)
     
   if serving_unit is None:
-    try:
-      serving_unit = float(food_info['serving_weight_grams'])
-    except TypeError:
-      serving_unit = 1
+    serving_unit = float(food_info['serving_weight_grams'])
+
   if serving_qty is None:
-    try:
-      serving_qty = float(food_info['serving_qty'])
-    except:
-      serving_qty = 1
+    serving_qty = float(food_info['serving_qty'])
 
   # catch if serving_unit and serving_qty url parameters are not of the correct type
   try:
@@ -114,17 +109,10 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
 # Construct tuple of measures (serving weight/qty, measure unit) for a food product 
 def get_measures_tuple(food_info):
   if food_info['alt_measures'] is None:
-    try:
-      #if food_info.get('serving_weight_grams') is None:
-       # measures_tuple = 
-      measures_tuple = [(str(float(food_info['serving_weight_grams'])/float(food_info['serving_qty'])),food_info['serving_unit'])]
-    except TypeError:
-      measures_tuple = [('1','serving')]
+    measures_tuple = [(str(float(food_info['serving_weight_grams'])/float(food_info['serving_qty'])),food_info['serving_unit'])]
+
   else:
-    try:
-      measures_tuple = [(str(float(i['serving_weight'])/float(i['qty'])),i['measure']) for i in food_info['alt_measures']]
-    except TypeError:
-      measures_tuple = None
+    measures_tuple = [(str(float(i['serving_weight'])/float(i['qty'])),i['measure']) for i in food_info['alt_measures']]
 
   return measures_tuple
 
@@ -151,3 +139,22 @@ def update_nutrients(food_info, nutrient_multiplier, nutrient_categories):
     food_info[category] = food_info[category] * nutrient_multiplier
   
   return food_info
+
+# function to clean up "None" values in food_info
+def clean_food_data(food_info):
+  try:
+    float(food_info['serving_weight_grams'])
+  except TypeError:
+    food_info['serving_weight_grams'] = 1.0
+  
+  try:
+    float(food_info['serving_qty'])
+  except TypeError:
+    food_info['serving_qty'] = 1.00
+  
+  for category in nutrient_categories:
+    if not category in food_info.keys():
+      continue
+    
+    if type(food_info[category]) != int and type(food_info[category]) != float:
+      food_info[category] = 0.0
