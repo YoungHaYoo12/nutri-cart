@@ -16,7 +16,9 @@ class FlaskClientTestCase(unittest.TestCase):
     db.session.remove()
     db.drop_all()
     self.app_context.pop()
-  
+
+# test class for 'core' blueprint
+class FlaskCoreTestCase(FlaskClientTestCase):
   def test_core_index_page(self):
     # Form Validated
     response1 = self.client.post(url_for('core.index'),data= {
@@ -29,7 +31,9 @@ class FlaskClientTestCase(unittest.TestCase):
       'query':''
     })
     self.assertFalse(response2.status_code==302)
-  
+
+# test class for 'foods' blueprint  
+class FlaskFoodsTestCase(FlaskClientTestCase):
   def test_foods_list_page(self):
     # Common Filter
     response1 = self.client.get(url_for('foods.list',food_name='Brownie',filter='common'))
