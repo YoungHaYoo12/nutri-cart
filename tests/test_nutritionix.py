@@ -1,5 +1,5 @@
 import unittest
-from nutritionix import search_item, get_common_nutrients, get_branded_nutrients
+from nutritionix import search_item, get_common_nutrients, get_branded_nutrients, nutrient_categories
 
 class BasicsTestCase(unittest.TestCase):
 
@@ -9,17 +9,12 @@ class BasicsTestCase(unittest.TestCase):
     self.assertTrue(resp1["food_name"] == "Big Mac")
 
     # contains specific nutrient categories
-    self.assertTrue('serving_qty' in resp1)
-    self.assertTrue('serving_unit' in resp1)
-    self.assertTrue('nf_calories' in resp1)
-    self.assertTrue('nf_total_fat' in resp1)
-    self.assertTrue('nf_saturated_fat' in resp1)
-    self.assertTrue('nf_cholesterol' in resp1)
-    self.assertTrue('nf_sodium' in resp1)
-    self.assertTrue('nf_total_carbohydrate' in resp1)
-    self.assertTrue('nf_dietary_fiber' in resp1)
-    self.assertTrue('nf_sugars' in resp1)
-    self.assertTrue('nf_protein' in resp1)
+    for nutrient in nutrient_categories:
+      self.assertTrue(nutrient in resp1)
+    
+    # Test error handling for invalid requests
+    resp2 = get_branded_nutrients("asdfasdf123123")
+    self.assertTrue(resp2 is None)
 
   def test_get_common_nutrients(self):
     resp1 = get_common_nutrients('sushi')
@@ -28,18 +23,13 @@ class BasicsTestCase(unittest.TestCase):
     self.assertTrue(resp1['food_name'] == 'sushi')
 
     # contains specific nutrient categories
-    self.assertTrue('serving_qty' in resp1)
-    self.assertTrue('serving_unit' in resp1)
-    self.assertTrue('nf_calories' in resp1)
-    self.assertTrue('nf_total_fat' in resp1)
-    self.assertTrue('nf_saturated_fat' in resp1)
-    self.assertTrue('nf_cholesterol' in resp1)
-    self.assertTrue('nf_sodium' in resp1)
-    self.assertTrue('nf_total_carbohydrate' in resp1)
-    self.assertTrue('nf_dietary_fiber' in resp1)
-    self.assertTrue('nf_sugars' in resp1)
-    self.assertTrue('nf_protein' in resp1)
+    for nutrient in nutrient_categories:
+      self.assertTrue(nutrient in resp1)
   
+    # Test error handling for invalid requests
+    resp2 = get_branded_nutrients("app")
+    self.assertTrue(resp2 is None)
+
   def test_search_item(self):
     # does not return None
     self.assertFalse(search_item('orange') is None)

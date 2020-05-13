@@ -81,7 +81,6 @@ def get_branded_nutrients(nix_item_id):
       "nix_item_id":nix_item_id,
   }
   response = requests.get(url_search_item,headers=headers,params=body)
-
   # catch KeyError resulting from empty or incorrect response
   try:
     nutrients = response.json()['foods'][0]
@@ -93,14 +92,3 @@ def get_branded_nutrients(nix_item_id):
 # Contains nutrient categories to display
 nutrient_categories = ['nf_calories', 'nf_total_fat',
 'nf_saturated_fat','nf_cholesterol','nf_sodium','nf_total_carbohydrate','nf_dietary_fiber','nf_sugars','nf_protein']
-
-def test(food_name):
-
-  body = {
-          "query":food_name,
-  }
-
-  response = requests.post(url_natural_nutrients,headers=headers,data=body)
-  return response
-  nutrients = response.json()['foods'][0]
-  return nutrients
