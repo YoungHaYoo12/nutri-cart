@@ -143,13 +143,17 @@ def update_nutrients(food_info, nutrient_multiplier, nutrient_categories):
 # function to clean up "None" values in food_info
 def clean_food_data(food_info):
   try:
-    float(food_info['serving_weight_grams'])
+    float(food_info.get('serving_weight_grams'))
   except TypeError:
+    food_info['serving_weight_grams'] = 1.0
+  except ValueError:
     food_info['serving_weight_grams'] = 1.0
   
   try:
-    float(food_info['serving_qty'])
+    float(food_info.get('serving_qty'))
   except TypeError:
+    food_info['serving_qty'] = 1.00
+  except ValueError:
     food_info['serving_qty'] = 1.00
   
   for category in nutrient_categories:
