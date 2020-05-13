@@ -115,9 +115,11 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
 def get_measures_tuple(food_info):
   if food_info['alt_measures'] is None:
     try:
+      #if food_info.get('serving_weight_grams') is None:
+       # measures_tuple = 
       measures_tuple = [(str(float(food_info['serving_weight_grams'])/float(food_info['serving_qty'])),food_info['serving_unit'])]
     except TypeError:
-      measures_tuple = None
+      measures_tuple = [('1','serving')]
   else:
     try:
       measures_tuple = [(str(float(i['serving_weight'])/float(i['qty'])),i['measure']) for i in food_info['alt_measures']]
