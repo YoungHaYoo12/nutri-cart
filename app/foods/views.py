@@ -38,7 +38,7 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
   if serving_qty is None:
     try:
       serving_qty = float(food_info['serving_qty'])
-    except:
+    except TypeError:
       serving_qty = 1
 
   # catch if serving_unit and serving_qty url parameters are not of the correct type
@@ -128,7 +128,14 @@ def get_measures_tuple(food_info):
 
 # Calculate new nutrient multiplier when serving unit and quantity change
 def get_nutrient_multiplier(original_serving_weight,new_serving_weight, qty):
-  return float(new_serving_weight)/float(original_serving_weight)*float(qty)
+  try:
+    new_serving_weight = float(new_serving_weight)
+    original_serving_weight = float(original_serving_weight)
+    qty = float(qty)
+  except TypeError:
+    return 1
+
+  return new_serving_weight/original_serving_weight*qty
 
 # Update nutrient categories by nutrient multiplier when serving unit and quantity change
 def update_nutrients(food_info, nutrient_multiplier, nutrient_categories):
