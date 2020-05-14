@@ -48,6 +48,7 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
   nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],
   serving_unit, serving_qty)
   update_nutrients(food_info,nutrient_multiplier,nutrient_categories)
+  round_food_data(food_info,nutrient_categories)
 
   # FORM PROCESSING
   form = FoodServingForm()
@@ -93,6 +94,7 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
   nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],
   serving_unit, serving_qty)
   update_nutrients(food_info,nutrient_multiplier,nutrient_categories)
+  round_food_data(food_info,nutrient_categories)
 
   # FORM PROCESSING
   form = FoodServingForm()
@@ -174,3 +176,8 @@ def clean_food_data(food_info, nutrient_categories):
       food_info[category] = Decimal(food_info.get(category))
     except InvalidOperation:
       food_info[category] = Decimal(0)
+
+# function to round nutrient category values 
+def round_food_data(food_info,nutrient_categories):
+  for category in nutrient_categories:
+    food_info[category] = round(food_info[category],2)
