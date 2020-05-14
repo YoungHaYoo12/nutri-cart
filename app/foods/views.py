@@ -65,48 +65,51 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
 
   return render_template('foods/food.html',food_info=food_info,form=form, nutrient_categories_units=nutrient_categories_units)
 
-# Detail Page For Branded Food
+# Detail Page For Common Food
 @foods.route('/branded/<nix_item_id>', methods=['GET','POST'])
 @foods.route('/branded/<nix_item_id>/<serving_unit>/<serving_qty>',methods=['GET','POST'])
 def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
-  # Read in Food Information
+  # READ IN FOOD INFO
   food_info = get_branded_nutrients(nix_item_id)
 
-  # 404 exception if food is not in nutritionix database
   if food_info is None:
     abort(404)
-  
-  clean_food_data(food_info)
     
+  clean_food_data(food_info, nutrient_categories)
+
+  # URL PARAMETER PROCESSING
   if serving_unit is None:
-    serving_unit = float(food_info['serving_weight_grams'])
-
+    serving_unit = food_info['serving_weight_grams']
   if serving_qty is None:
-    serving_qty = float(food_info['serving_qty'])
+    serving_qty = food_info['serving_qty']
 
-  # catch if serving_unit and serving_qty url parameters are not of the correct type
   try:
-    nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],serving_unit,serving_qty)
-  except ValueError:
+    serving_unit = round(Decimal(serving_unit),2)
+    serving_qty = round(Decimal(serving_qty),2)
+  except InvalidOperation:
     abort(404)
+  
+  # UPDATE NUTRIENTS
+  nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],
+  serving_unit, serving_qty)
+  update_nutrients(food_info,nutrient_multiplier,nutrient_categories)
 
-  food_info = update_nutrients(food_info,nutrient_multiplier,nutrient_categories)
-
-  # Form Processing
+  # FORM PROCESSING
   form = FoodServingForm()
   measures_tuple = get_measures_tuple(food_info)
   form.serving_unit.choices = measures_tuple
+
   if form.validate_on_submit():
     return redirect(url_for('foods.branded_food',nix_item_id=nix_item_id,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
   elif request.method == 'GET':
     try:
-      form.serving_qty.data = float(serving_qty)
+      form.serving_qty.data = Decimal(serving_qty)
       form.serving_unit.data = str(serving_unit)
     except:
       pass
 
   return render_template('foods/food.html',food_info=food_info,form=form, nutrient_categories_units=nutrient_categories_units)
-  
+
 ######################################
 # HELPER FUNCTIONS
 
