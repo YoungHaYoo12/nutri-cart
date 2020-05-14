@@ -1,3 +1,4 @@
+from decimal import Decimal, InvalidOperation
 from flask import render_template, redirect, url_for,request,abort
 from app.foods import foods
 from app.foods.forms import FoodServingForm
@@ -23,38 +24,41 @@ def list(food_name,filter):
 @foods.route('/common/<food_name>', methods=['GET','POST'])
 @foods.route('/common/<food_name>/<serving_unit>/<serving_qty>',methods=['GET','POST'])
 def common_food(food_name, serving_unit=None, serving_qty=None):
-  # Read in Food Information
+  # READ IN FOOD INFO
   food_info = get_common_nutrients(food_name)
 
-  # 404 exception if food is not in nutritionix database
   if food_info is None:
     abort(404)
-  
-  # If food_info does not have right type of data in a category, set it to a default value
-  clean_food_data(food_info)
+    
+  clean_food_data(food_info, nutrient_categories)
 
+  # URL PARAMETER PROCESSING
   if serving_unit is None:
-    serving_unit = float(food_info['serving_weight_grams'])
-
+    serving_unit = food_info['serving_weight_grams']
   if serving_qty is None:
-    serving_qty = float(food_info['serving_qty'])
+    serving_qty = food_info['serving_qty']
 
-  # catch if serving_unit and serving_qty url parameters are not of the correct type
   try:
-    nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],serving_unit,serving_qty)
-  except ValueError:
+    serving_unit = round(Decimal(serving_unit),2)
+    serving_qty = round(Decimal(serving_qty),2)
+  except InvalidOperation:
     abort(404)
-  food_info = update_nutrients(food_info,nutrient_multiplier,nutrient_categories)
+  
+  # UPDATE NUTRIENTS
+  nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],
+  serving_unit, serving_qty)
+  update_nutrients(food_info,nutrient_multiplier,nutrient_categories)
 
-  # Form Processing
+  # FORM PROCESSING
   form = FoodServingForm()
   measures_tuple = get_measures_tuple(food_info)
   form.serving_unit.choices = measures_tuple
+
   if form.validate_on_submit():
     return redirect(url_for('foods.common_food',food_name=food_name,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
   elif request.method == 'GET':
     try:
-      form.serving_qty.data = float(serving_qty)
+      form.serving_qty.data = Decimal(serving_qty)
       form.serving_unit.data = str(serving_unit)
     except:
       pass
@@ -109,56 +113,61 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
 # Construct tuple of measures (serving weight/qty, measure unit) for a food product 
 def get_measures_tuple(food_info):
   if food_info['alt_measures'] is None:
-    measures_tuple = [(str(float(food_info['serving_weight_grams'])/float(food_info['serving_qty'])),food_info['serving_unit'])]
+    single_serving_weight = food_info['serving_weight_grams']/food_info['serving_qty']
+    single_serving_weight = round(single_serving_weight,2)
+    measures_tuple = [(str(single_serving_weight),food_info['serving_unit'])]
 
   else:
-    measures_tuple = [(str(float(i['serving_weight'])/float(i['qty'])),i['measure']) for i in food_info['alt_measures']]
+    measures_tuple = [
+      (str(round(i['serving_weight']/i['qty'],2)),i['measure']) for i in food_info['alt_measures']
+    ]
 
   return measures_tuple
 
 # Calculate new nutrient multiplier when serving unit and quantity change
 def get_nutrient_multiplier(original_serving_weight,new_serving_weight, qty):
   try:
-    new_serving_weight = float(new_serving_weight)
-    original_serving_weight = float(original_serving_weight)
-    qty = float(qty)
-  except TypeError:
-    return 1
+    new_serving_weight = Decimal(new_serving_weight)
+    original_serving_weight = Decimal(original_serving_weight)
+    qty = Decimal(qty)
+  except InvalidOperation:
+    return Decimal(1)
 
   return new_serving_weight/original_serving_weight*qty
 
 # Update nutrient categories by nutrient multiplier when serving unit and quantity change
 def update_nutrients(food_info, nutrient_multiplier, nutrient_categories):
   for category in nutrient_categories:
-    if (not category in food_info.keys()):
-      continue
-
-    if type(food_info[category]) != int and type(food_info[category]) != float:
-      continue
-    
     food_info[category] = food_info[category] * nutrient_multiplier
-  
-  return food_info
 
 # function to clean up "None" values in food_info
-def clean_food_data(food_info):
+def clean_food_data(food_info, nutrient_categories):
+  # serving_weight_grams & serving_qty
   try:
-    float(food_info.get('serving_weight_grams'))
-  except TypeError:
-    food_info['serving_weight_grams'] = 1.0
-  except ValueError:
-    food_info['serving_weight_grams'] = 1.0
-  
+    food_info['serving_weight_grams'] = Decimal(food_info.get('serving_weight_grams'))
+  except InvalidOperation:
+    food_info['serving_weight_grams'] = Decimal(1)
   try:
-    float(food_info.get('serving_qty'))
-  except TypeError:
-    food_info['serving_qty'] = 1.00
-  except ValueError:
-    food_info['serving_qty'] = 1.00
+    food_info['serving_qty'] = Decimal(food_info.get('serving_qty'))
+  except InvalidOperation:
+    food_info['serving_qty'] = Decimal(1)
   
+  # alt measures 
+  if food_info['alt_measures'] is not None:
+    for i in food_info['alt_measures']:
+      try:
+        i['serving_weight'] = Decimal(i.get('serving_weight'))
+      except InvalidOperation:
+        i['serving_weight'] = Decimal(1)
+      
+      try:
+        i['qty'] = Decimal(i.get('qty'))
+      except InvalidOperation:
+        i['qty'] = Decimal(1)
+
+  # nutrient categories
   for category in nutrient_categories:
-    if not category in food_info.keys():
-      continue
-    
-    if type(food_info[category]) != int and type(food_info[category]) != float:
-      food_info[category] = 0.0
+    try:
+      food_info[category] = Decimal(food_info.get(category))
+    except InvalidOperation:
+      food_info[category] = Decimal(0)
