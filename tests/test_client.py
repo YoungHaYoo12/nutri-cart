@@ -264,3 +264,5 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     resp7 = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id))
     data7 = resp7.get_data(as_text=True)
     self.assertTrue('<option selected value="212.0">burger</option>' in data7)
+
+class FlaskErrorsTestCase(FlaskClientTestCase):

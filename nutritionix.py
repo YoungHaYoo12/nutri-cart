@@ -92,3 +92,15 @@ def get_branded_nutrients(nix_item_id):
 # Contains nutrient categories to display
 nutrient_categories = ['nf_calories', 'nf_total_fat',
 'nf_saturated_fat','nf_cholesterol','nf_sodium','nf_total_carbohydrate','nf_dietary_fiber','nf_sugars','nf_protein']
+
+nutrient_categories_units = {
+  'nf_calories':'kcal',
+  'nf_total_fat':'g',
+  'nf_saturated_fat':'g',
+  'nf_cholesterol':'mg',
+  'nf_sodium':'mg',
+  'nf_total_carbohydrate':'g',
+  'nf_dietary_fiber':'g',
+  'nf_sugars':'g',
+  'nf_protein':'g'
+}
