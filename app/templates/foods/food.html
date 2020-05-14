@@ -22,14 +22,14 @@
         <div class="jumbotron-body-text">
           <!-- Nutrition Facts -->
           <hr class="my-4">
-          <p class="lead">Calories: {{food_info.nf_calories}}</p>
-          <p class="lead">Total Carbohydrate: {{food_info.nf_total_carbohydrate}}</p>
-          <p class="lead">Protein: {{food_info.nf_protein}}</p>
-          <p class="lead">Sodium: {{food_info.nf_sodium}}</p>
-          <p class="lead">Sugars: {{food_info.nf_sugars}}</p>
-          <p class="lead">Total Fat: {{food_info.nf_total_fat}}</p>
-          <p class="lead">Saturated Fat: {{food_info.nf_saturated_fat}}</p>
-          <p class="lead">Dietary Fiber: {{food_info.nf_dietary_fiber}}</p>
+          <p class="lead">Calories: {{food_info.nf_calories}} {{nutrient_categories_units.nf_calories}}</p>
+          <p class="lead">Total Carbohydrate: {{food_info.nf_total_carbohydrate}} {{nutrient_categories_units.nf_total_carbohydrate}}</p>
+          <p class="lead">Protein: {{food_info.nf_protein}} {{nutrient_categories_units.nf_protein}}</p>
+          <p class="lead">Sodium: {{food_info.nf_sodium}} {{nutrient_categories_units.nf_sodium}}</p>
+          <p class="lead">Sugars: {{food_info.nf_sugars}} {{nutrient_categories_units.nf_sugars}}</p>
+          <p class="lead">Total Fat: {{food_info.nf_total_fat}} {{nutrient_categories_units.nf_total_fat}}</p>
+          <p class="lead">Saturated Fat: {{food_info.nf_saturated_fat}} {{nutrient_categories_units.nf_saturated_fat}}</p>
+          <p class="lead">Dietary Fiber: {{food_info.nf_dietary_fiber}} {{nutrient_categories_units.nf_dietary_fiber}}</p>
 
           <!-- Serving Quantity and Unit Form -->
           <form class="form-inline" method="POST">

@@ -1,7 +1,7 @@
 from flask import render_template, redirect, url_for,request,abort
 from app.foods import foods
 from app.foods.forms import FoodServingForm
-from nutritionix import search_item, get_common_nutrients, get_branded_nutrients, nutrient_categories
+from nutritionix import search_item, get_common_nutrients, get_branded_nutrients, nutrient_categories, nutrient_categories_units
 
 ######################################
 # VIEW FUNCTIONS
@@ -59,7 +59,7 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
     except:
       pass
 
-  return render_template('foods/food.html',food_info=food_info,form=form)
+  return render_template('foods/food.html',food_info=food_info,form=form, nutrient_categories_units=nutrient_categories_units)
 
 # Detail Page For Branded Food
 @foods.route('/branded/<nix_item_id>', methods=['GET','POST'])
@@ -101,7 +101,7 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
     except:
       pass
 
-  return render_template('foods/food.html',food_info=food_info,form=form)
+  return render_template('foods/food.html',food_info=food_info,form=form, nutrient_categories_units=nutrient_categories_units)
   
 ######################################
 # HELPER FUNCTIONS
