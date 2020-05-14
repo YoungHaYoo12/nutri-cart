@@ -43,6 +43,8 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
     serving_qty = round(Decimal(serving_qty),2)
   except InvalidOperation:
     abort(404)
+  except TypeError:
+    abort(404)
   
   # UPDATE NUTRIENTS
   nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],
@@ -88,6 +90,8 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
     serving_unit = round(Decimal(serving_unit),2)
     serving_qty = round(Decimal(serving_qty),2)
   except InvalidOperation:
+    abort(404)
+  except TypeError:
     abort(404)
   
   # UPDATE NUTRIENTS
@@ -137,6 +141,8 @@ def get_nutrient_multiplier(original_serving_weight,new_serving_weight, qty):
     qty = Decimal(qty)
   except InvalidOperation:
     return Decimal(1)
+  except TypeError:
+    return Decimal(1)
 
   return new_serving_weight/original_serving_weight*qty
 
@@ -152,11 +158,15 @@ def clean_food_data(food_info, nutrient_categories):
     food_info['serving_weight_grams'] = Decimal(food_info.get('serving_weight_grams'))
   except InvalidOperation:
     food_info['serving_weight_grams'] = Decimal(1)
+  except TypeError:
+    food_info['serving_weight_grams'] = Decimal(1)
   try:
     food_info['serving_qty'] = Decimal(food_info.get('serving_qty'))
   except InvalidOperation:
     food_info['serving_qty'] = Decimal(1)
-  
+  except TypeError:
+    food_info['serving_qty'] = Decimal(1)
+
   # alt measures 
   if food_info['alt_measures'] is not None:
     for i in food_info['alt_measures']:
@@ -164,10 +174,13 @@ def clean_food_data(food_info, nutrient_categories):
         i['serving_weight'] = Decimal(i.get('serving_weight'))
       except InvalidOperation:
         i['serving_weight'] = Decimal(1)
-      
+      except TypeError:
+        i['serving_weight'] = Decimal(1)
       try:
         i['qty'] = Decimal(i.get('qty'))
       except InvalidOperation:
+        i['qty'] = Decimal(1)
+      except TypeError:
         i['qty'] = Decimal(1)
 
   # nutrient categories
@@ -175,6 +188,8 @@ def clean_food_data(food_info, nutrient_categories):
     try:
       food_info[category] = Decimal(food_info.get(category))
     except InvalidOperation:
+      food_info[category] = Decimal(0)
+    except TypeError:
       food_info[category] = Decimal(0)
 
 # function to round nutrient category values 
