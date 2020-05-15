@@ -121,7 +121,7 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
 
 # Construct tuple of measures (serving weight/qty, measure unit) for a food product 
 def get_measures_tuple(food_info):
-  if food_info['alt_measures'] is None:
+  if food_info.get('alt_measures') is None:
     single_serving_weight = food_info['serving_weight_grams']/food_info['serving_qty']
     single_serving_weight = round(single_serving_weight,2)
     measures_tuple = [(str(single_serving_weight),food_info['serving_unit'])]
@@ -168,7 +168,7 @@ def clean_food_data(food_info, nutrient_categories):
     food_info['serving_qty'] = Decimal(1)
 
   # alt measures 
-  if food_info['alt_measures'] is not None:
+  if food_info.get('alt_measures') is not None:
     for i in food_info['alt_measures']:
       try:
         i['serving_weight'] = Decimal(i.get('serving_weight'))
