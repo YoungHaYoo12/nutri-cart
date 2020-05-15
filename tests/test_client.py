@@ -2,7 +2,7 @@ import unittest
 from decimal import Decimal
 from flask import url_for
 from app import create_app, db
-from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data
+from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data,round_food_data
 from nutritionix import nutrient_categories
 
 class FlaskClientTestCase(unittest.TestCase):
@@ -100,7 +100,7 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
       'not_in_categories':2000,
       'not_a_number':'Hello World'
     }
-    food_info = update_nutrients(food_info, 2, nutrient_categories)
+    update_nutrients(food_info, 2, nutrient_categories)
     self.assertTrue(food_info['nf_calories'] == 1600)
     self.assertTrue(food_info['nf_sugars'] == 42)
     self.assertTrue(food_info['nf_cholesterol'] == 20)
@@ -110,7 +110,7 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     # clean_food_data()
     food_info = {
       'serving_weight_grams':None,
-      'serving_qty':'not a float'
+      'serving_qty':'not a float',
     }
     clean_food_data(food_info,nutrient_categories)
     self.assertTrue(food_info['serving_weight_grams'] == 1.00)
@@ -155,7 +155,14 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     # round_food_data
     food_info = {
       'nf_calories':20.20202020,
-      'nf_cholesterol':20
+      'nf_cholesterol':20,
+      'nf_sugars':88.88,
+      'nf_protein':0,
+      'nf_total_fat':0,
+      'nf_saturated_fat':0,
+      'nf_sodium':0,
+      'nf_total_carbohydrate':0,
+      'nf_dietary_fiber':0,      
     }
     round_food_data(food_info,nutrient_categories)
     self.assertTrue(food_info['nf_calories'] == 20.20)
@@ -170,8 +177,8 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(resp1b.status_code == 200)
 
     # Error handling when url parameters "serving_unit" and "serving_qty" are not of correct type
-    resp2a = self.client.get(url_for('foods.common_food',food_name='apple',serving_unit='10.0',serving_qty='10.0'))
-    resp2b = self.client.get(url_for('foods.common_food',food_name='apple',serving_unit='10.0',serving_qty='not_convertable_to_float'))
+    resp2a = self.client.get(url_for('foods.common_food',food_name='apple',serving_unit='10.00',serving_qty='10.00'))
+    resp2b = self.client.get(url_for('foods.common_food',food_name='apple',serving_unit='10.00',serving_qty='not_convertable_to_float'))
     self.assertTrue(resp2a.status_code == 200)
     self.assertTrue(resp2b.status_code == 404)
 
@@ -188,15 +195,15 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(resp4.status_code==200)
 
     # Filling in form data when request method is GET
-    resp5 = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit=63.00,serving_qty=999.00))
+    resp5 = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit='63.00',serving_qty='999.00'))
     self.assertTrue('selected value="63.00"' in resp5.get_data(as_text=True))
     self.assertTrue('value="999.00"' in resp5.get_data(as_text=True))    
 
     # Check nutrition updating according to serving_unit and serving_qty
     # (CHECKED AGAINST NUTRITIONIX DATABASE INFORMATION)
-    resp6a = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit=50.00,serving_qty=1.00))
-    resp6b = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit=50.00,serving_qty=2.00))
-    resp6c = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit=38.00,serving_qty=1.00))
+    resp6a = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit='50.00',serving_qty='1.00'))
+    resp6b = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit='50.00',serving_qty='2.00'))
+    resp6c = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit='38.00',serving_qty='1.00'))
     data6a = resp6a.get_data(as_text=True)
     data6b = resp6b.get_data(as_text=True)
     data6c = resp6c.get_data(as_text=True)
