@@ -3,6 +3,7 @@ from decimal import Decimal
 from flask import url_for
 from app import create_app, db
 from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data,round_food_data,is_in_tuple_list
+from app.models import User
 from nutritionix import nutrient_categories
 
 class FlaskClientTestCase(unittest.TestCase):
@@ -342,8 +343,8 @@ class FlaskAuthTestCase(FlaskClientTestCase):
       'username':'one',
       'password':'one',
       'password2':'one'
-    })
-    self.assertEqual(response1.status_code, 302)
+    },follow_redirects=True)
+    self.assertEqual(response1.status_code, 200)
     self.assertTrue("Successfully Registered" in response1.get_data(as_text=True))
 
     # register with empty data
@@ -425,10 +426,14 @@ class FlaskAuthTestCase(FlaskClientTestCase):
     self.assertTrue("Invalid Username or Password" in response8.get_data(as_text=True))
 
     # successful login
+    user = User(email='one@one.com',username='one',password='one')
+    db.session.add(user)
+    db.session.commit()
     response9 = self.client.post(url_for('auth.login'), data= {
       'email':'one@one.com',
       'password':'one'
     }, follow_redirects=True)
+    print(response9.get_data(as_text=True))
     self.assertEqual(response9.status_code,200)
     self.assertTrue('Logged In Successfully' in response9.get_data(as_text=True))
 
