@@ -5,6 +5,7 @@ __pycache__/
 
 # database
 data-dev.sqlite
+data-test.sqlite
 
 # C extensions
 *.so
