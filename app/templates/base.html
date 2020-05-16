@@ -17,7 +17,7 @@
     </title>
   </head>
   <body>
-      <nav class="navbar navbar-expand-md">
+      <nav class="navbar navbar-expand-md navbar-dark">
         <a class="navbar-brand" href="#">
           <img src="{{url_for('static',filename='images/brand_icon_white.png')}}" width="170">
         </a>
@@ -45,6 +45,7 @@
           </ul>
         </div>
       </nav>
+      
       <div class="content-container">
         {% block content %}
         {% endblock %}
