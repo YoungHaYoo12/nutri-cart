@@ -135,6 +135,8 @@ nav .navbar-nav li a{
 
 .foods-list-wrapper .intro-text {
   color:white;
+  text-align:center;
+  margin-top:15px;
 }
 
 /* ---------- foods/food.html ---------- */
