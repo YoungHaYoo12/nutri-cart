@@ -38,9 +38,9 @@ def login():
 
   return render_template('auth/login.html',form=form)
 
-  @auth.route('/logout')
-  @login_required
-  def logout():
-    logout_user()
-    flash('You Have Been Logged Out')
-    return redirect(url_for('core.index'))
+@auth.route('/logout')
+@login_required
+def logout():
+  logout_user()
+  flash('You Have Been Logged Out')
+  return redirect(url_for('core.index'))
