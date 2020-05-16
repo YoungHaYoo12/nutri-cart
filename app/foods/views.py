@@ -18,7 +18,7 @@ def list(food_name,filter):
   else:
     abort(404)
 
-  return render_template('foods/list.html',food_name=food_name,foods=foods)
+  return render_template('foods/list.html',food_name=food_name,foods=foods,filter=filter)
   
 # Detail Page For Common Food
 @foods.route('/common/<food_name>', methods=['GET','POST'])

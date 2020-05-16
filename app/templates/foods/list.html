@@ -29,8 +29,19 @@
             <img src="{{food.photo.thumb}}" alt="">
           </div>
           <div class="text-container">
-            <h6 class="text-capitalize">{{food.food_name}}</h6>
-            <button class="btn btn-info">Add</button>
+            <h6 class="text-capitalize">
+              {{food.food_name}}
+            </h6>
+            <a class="btn btn-info" 
+            href=
+              {% if filter == "common" %}
+                "{{url_for('foods.common_food',food_name=food.food_name)}}"
+              {% else %}
+                "{{url_for('foods.branded_food',nix_item_id=food.nix_item_id)}}"
+              {% endif %}
+            >
+              Select
+            </a>
           </div>
         </div>
       </div>
