@@ -1,8 +1,24 @@
 from flask import render_template, redirect, request, url_for, flash
 from flask_login import login_user, logout_user, login_required
+from app import db
 from app.auth import auth
 from app.models import User 
-from app.auth.forms import LoginForm
+from app.auth.forms import LoginForm, RegistrationForm
+
+@auth.route('/register',methods=['GET','POST'])
+def register():
+  form = RegistrationForm()
+
+  if form.validate_on_submit():
+    user = User(email=form.email.data,username=form.username.data,password=form.password.data)
+
+    db.session.add(user)
+    db.session.commit()
+
+    flash('Successfully Registered')
+    return redirect(url_for('auth.login'))
+
+  return render_template('auth/register.html', form=form)
 
 @auth.route('/login', methods=['GET','POST'])
 def login():

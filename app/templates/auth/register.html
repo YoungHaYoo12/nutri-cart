@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="auth-login-wrapper"
+<div class="auth-register-wrapper"
   <div class="container">
-    <div class="login-form">
-      <h1>Log In</h1>
+    <div class="register-form">
+      <h1>Register</h1>
       <form method='POST'>
         {{form.hidden_tag()}}
 
@@ -13,22 +13,20 @@
           {{form.email(class="form-control")}}
         </div>
         <div class="form-group">
+          {{form.username.label}}
+          {{form.username(class="form-control")}}
+        </div>
+        <div class="form-group">
           {{form.password.label}}
           {{form.password(class="form-control")}}
         </div>
-        <div class="form-group form-check">
-          {{form.remember_me(class="form-check-input")}}
-          {{form.remember_me.label(class="form-check-label")}}
+        <div class="form-group">
+          {{form.password2.label}}
+          {{form.password2(class="form-control")}}
         </div>
 
         {{form.submit(class="btn btn-primary")}}
       </form>
-      <p>
-        New user?
-        <a href= "{{url_for('auth.register')}}">
-          Click here to register.
-        </a>
-      </p>
     </div>
   </div>
 </div>
