@@ -2,7 +2,7 @@ import unittest
 from decimal import Decimal
 from flask import url_for
 from app import create_app, db
-from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data,round_food_data
+from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data,round_food_data,is_in_tuple_list
 from nutritionix import nutrient_categories
 
 class FlaskClientTestCase(unittest.TestCase):
@@ -168,6 +168,16 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(food_info['nf_calories'] == 20.20)
     self.assertTrue(food_info['nf_cholesterol'] == 20.00)
 
+    # is_in_tuple_list
+    tuple_list = [
+      ('1.11','arg2'),
+      ('2.22','arg2'),
+      ('3.33','arg2')
+    ]
+    self.assertTrue(is_in_tuple_list('1.11',tuple_list))
+    self.assertTrue(is_in_tuple_list('2.22',tuple_list))
+    self.assertTrue(is_in_tuple_list('3.33',tuple_list))
+    self.assertFalse(is_in_tuple_list('1.22',tuple_list))
 
   def test_foods_common_food(self):
     # Check 404 exception for when food is not in nutritionix database
@@ -177,8 +187,8 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(resp1b.status_code == 200)
 
     # Error handling when url parameters "serving_unit" and "serving_qty" are not of correct type
-    resp2a = self.client.get(url_for('foods.common_food',food_name='apple',serving_unit='10.00',serving_qty='10.00'))
-    resp2b = self.client.get(url_for('foods.common_food',food_name='apple',serving_unit='10.00',serving_qty='not_convertable_to_float'))
+    resp2a = self.client.get(url_for('foods.common_food',food_name='apple',serving_unit='182.00',serving_qty='10.00'))
+    resp2b = self.client.get(url_for('foods.common_food',food_name='apple',serving_unit='182.00',serving_qty='not_convertable_to_float'))
     self.assertTrue(resp2a.status_code == 200)
     self.assertTrue(resp2b.status_code == 404)
 
@@ -247,6 +257,10 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue('<option value="1.00">g</option>' in data7)
     self.assertTrue('<option value="28.35">wt. oz</option>' in data7)
 
+    # Check 404 response when serving_unit url parameter is not valid to SelectField options
+    resp8 = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit='10.00',serving_qty='1.00'))
+    self.assertTrue(resp8.status_code==404)
+
   def test_foods_branded_food(self):
     big_mac_id = "513fc9e73fe3ffd40300109f"
     fries_id = "513fc9c9673c4fbc26003ff6"
@@ -257,8 +271,8 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(resp1b.status_code == 200)
 
     # Error handling when url parameters "serving_unit" and "serving_qty" are not of correct type
-    resp2a = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id,serving_unit='10.00',serving_qty='10.00'))
-    resp2b = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id,serving_unit='10.00',serving_qty='not_convertable_to_float'))
+    resp2a = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id,serving_unit='212.00',serving_qty='10.00'))
+    resp2b = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id,serving_unit='212.00',serving_qty='not_convertable_to_float'))
     self.assertTrue(resp2a.status_code == 200)
     self.assertTrue(resp2b.status_code == 404)
 
@@ -313,3 +327,7 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     resp7 = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id))
     data7 = resp7.get_data(as_text=True)
     self.assertTrue('<option selected value="212.00">burger</option>' in data7)
+
+    # Check 404 response when serving_unit url parameter is not valid to SelectField options
+    resp8 = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id,serving_unit=1.00,serving_qty=1.00))
+    self.assertTrue(resp8.status_code==404)

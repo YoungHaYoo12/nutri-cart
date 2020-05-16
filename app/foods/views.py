@@ -45,7 +45,11 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
     abort(404)
   except TypeError:
     abort(404)
-  
+
+  measures_tuple = get_measures_tuple(food_info)
+  if not is_in_tuple_list(str(serving_unit),measures_tuple):
+    abort(404)
+
   # UPDATE NUTRIENTS
   nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],
   serving_unit, serving_qty)
@@ -54,7 +58,6 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
 
   # FORM PROCESSING
   form = FoodServingForm()
-  measures_tuple = get_measures_tuple(food_info)
   form.serving_unit.choices = measures_tuple
 
   if form.validate_on_submit():
@@ -93,7 +96,11 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
     abort(404)
   except TypeError:
     abort(404)
-  
+
+  measures_tuple = get_measures_tuple(food_info)
+  if not is_in_tuple_list(str(serving_unit),measures_tuple):
+    abort(404)
+
   # UPDATE NUTRIENTS
   nutrient_multiplier = get_nutrient_multiplier(food_info['serving_weight_grams'],
   serving_unit, serving_qty)
@@ -102,7 +109,6 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
 
   # FORM PROCESSING
   form = FoodServingForm()
-  measures_tuple = get_measures_tuple(food_info)
   form.serving_unit.choices = measures_tuple
 
   if form.validate_on_submit():
@@ -196,3 +202,11 @@ def clean_food_data(food_info, nutrient_categories):
 def round_food_data(food_info,nutrient_categories):
   for category in nutrient_categories:
     food_info[category] = round(food_info[category],2)
+
+# function to check if argument is contained in list of tuples
+def is_in_tuple_list(arg,tuple_list):
+  for tuple in tuple_list:
+    if arg == tuple[0]:
+      return True
+  
+  return False
