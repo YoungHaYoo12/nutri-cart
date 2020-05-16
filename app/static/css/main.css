@@ -9,6 +9,9 @@ body {
   
   display:flex;
   flex-direction:column;
+
+  font-family: 'Playfair Display', serif;
+
 }
 
 /* ---------- BASE.HTML ---------- */
@@ -89,7 +92,6 @@ nav .navbar-nav li a{
 .foods-list-wrapper .food-entries {
   display:flex;
   justify-content:space-evenly;
-  font-family: 'Playfair Display', serif;
   margin:10%;
   margin-top:0;
 }
