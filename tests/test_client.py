@@ -401,8 +401,38 @@ class FlaskAuthTestCase(FlaskClientTestCase):
     self.assertNotEqual(response7.status_code,302)    
 
 
-  def test_auth_login(self):
-    pass
-    
-  
-  def test_auth_logout(self):
+  def test_auth_login_logout(self):
+    # invalid email
+    response1 = self.client.post(url_for('auth.login'), data= {
+      'email':'notanemail',
+      'password':'password'
+    })
+    self.assertNotEqual(response1.status_code,302)
+
+    # invalid password
+    response2 = self.client.post(url_for('auth.login'), data= {
+      'email':'one@one.com',
+      'password':''
+    })
+    self.assertNotEqual(response2.status_code,302)
+
+    # unsuccessful login
+    response8 = self.client.post(url_for('auth.login'), data= {
+      'email':'usernotregistered@email.com',
+      'password':'password'
+    })
+    self.assertNotEqual(response8.status_code,302)
+    self.assertTrue("Invalid Username or Password" in response8.get_data(as_text=True))
+
+    # successful login
+    response9 = self.client.post(url_for('auth.login'), data= {
+      'email':'one@one.com',
+      'password':'one'
+    }, follow_redirects=True)
+    self.assertEqual(response9.status_code,200)
+    self.assertTrue('Logged In Successfully' in response9.get_data(as_text=True))
+
+    # logout
+    response10 = self.client.get(url_for('auth.logout'),follow_redirects=True)
+    self.assertEqual(response10.status_code,200)
+    self.assertTrue('You Have Been Logged Out' in response10.get_data(as_text=True))
