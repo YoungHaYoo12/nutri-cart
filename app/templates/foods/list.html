@@ -11,7 +11,7 @@
 
     <div class="btn-group">
       <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Category
+        Category: {{filter|capitalize}}
       </button>
       <div class="dropdown-menu">
         <a class="dropdown-item" href="{{url_for('foods.list',food_name=food_name,filter="common")}}">Common Foods</a>
