@@ -6,19 +6,21 @@
     <h1 class="text-capitalize">Search Results For {{food_name}}</h1>
   </div>
   <!-- Filtering & Search Tool Bar -->
-  <ul class="nav nav-pills nav-fill">
-    <li class="nav-item">
-      <a class="nav-link active" href="{{url_for('core.index')}}">Search Again?</a>
-    </li>
-    <li class="nav-item dropdown">
-      <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Category</a>
+  <div class="filter-search-tool-bar">
+    <a class="btn btn-primary" href="{{url_for('core.index')}}">Search Again?</a>
+
+    <div class="btn-group">
+      <button type="button" class="btn btn-info dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Category
+      </button>
       <div class="dropdown-menu">
         <a class="dropdown-item" href="{{url_for('foods.list',food_name=food_name,filter="common")}}">Common Foods</a>
         <div class="dropdown-divider"></div>
         <a class="dropdown-item" href="{{url_for('foods.list',food_name=food_name,filter="branded")}}">Branded Foods</a>
       </div>
-    </li>
-  </ul>
+    </div>     
+  </div> 
+
   <!-- SHOW FOODS RESULTING FROM SEARCH TERM -->
   <div class="food-entries">
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4">

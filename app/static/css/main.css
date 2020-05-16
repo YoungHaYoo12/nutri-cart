@@ -127,6 +127,14 @@ nav .navbar-nav li a{
   max-width:100%;
 }
 
+.foods-list-wrapper .filter-search-tool-bar {
+  margin:5px;
+}
+
+.foods-list-wrapper .intro-text {
+  color:white;
+}
+
 /* ---------- foods/food.html ---------- */
 .foods-food-wrapper {
   width:100%;
