@@ -7,6 +7,9 @@ __pycache__/
 data-dev.sqlite
 data-test.sqlite
 
+# coverage
+coverage
+
 # C extensions
 *.so
 
