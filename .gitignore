@@ -8,7 +8,7 @@ data-dev.sqlite
 data-test.sqlite
 
 # coverage
-coverage
+tmp/coverage
 
 # C extensions
 *.so
