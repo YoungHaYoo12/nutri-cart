@@ -86,6 +86,7 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(get_nutrient_multiplier(4,1,3) == 0.75)
     self.assertTrue(type(get_nutrient_multiplier(10,20,2)) is Decimal)
     self.assertTrue(get_nutrient_multiplier('hello',0,10) == 1.00)
+    self.assertTrue(get_nutrient_multiplier(None,None,None) == Decimal(1))
 
     # update_nutrients()
     food_info = {
@@ -118,6 +119,14 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(food_info['serving_qty'] == 1.00)
 
     food_info = {
+      'serving_weight_grams':'not a dec',
+      'serving_qty':None,
+    }
+    clean_food_data(food_info,nutrient_categories)
+    self.assertTrue(food_info['serving_weight_grams'] == 1.00)
+    self.assertTrue(food_info['serving_qty'] == 1.00)
+
+    food_info = {
       'nf_calories':2000,
       'nf_sugars':'hello',
       'nf_cholesterol':None,
@@ -144,6 +153,10 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
         {
           'serving_weight':'notdecimal',
           'qty':'alsonotdecimal'
+        },
+        {
+          'serving_weight':None,
+          'qty':None
         }
       ]
     }
@@ -152,7 +165,8 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(food_info['alt_measures'][0]['qty'] == 10.00)
     self.assertTrue(food_info['alt_measures'][1]['serving_weight'] == 1.00)
     self.assertTrue(food_info['alt_measures'][1]['serving_weight'] == 1.00)
-
+    self.assertTrue(food_info['alt_measures'][2]['serving_weight'] == 1.00)
+    self.assertTrue(food_info['alt_measures'][2]['serving_weight'] == 1.00)
     # round_food_data
     food_info = {
       'nf_calories':20.20202020,
@@ -199,11 +213,16 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue('value="1.00"' in resp3.get_data(as_text=True))
 
     # When Form Validates On Submit check redirect
-    resp4 = self.client.post(url_for('foods.common_food',food_name='eggs',data = {
+    resp4a = self.client.post(url_for('foods.common_food',food_name='eggs',data = {
       'serving_unit':'50.00',
       'serving_qty':777.00
     }),follow_redirects=True)
-    self.assertTrue(resp4.status_code==200)
+    resp4b = self.client.post(url_for('foods.common_food',food_name='eggs',data = {
+      'serving_unit':'50.00',
+      'serving_qty':777.00
+    }))    
+    self.assertTrue(resp4a.status_code==200)
+    self.assertTrue(resp4b.status_code==302)
 
     # Filling in form data when request method is GET
     resp5 = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit='63.00',serving_qty='999.00'))
@@ -288,11 +307,16 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue('value="1.00"' in resp3b.get_data(as_text=True))
 
     # When Form Validates On Submit check redirect
-    resp4 = self.client.post(url_for('foods.branded_food',nix_item_id=big_mac_id,data = {
+    resp4a = self.client.post(url_for('foods.branded_food',nix_item_id=big_mac_id,data = {
       'serving_unit':'212.00',
       'serving_qty':777.00
     }),follow_redirects=True)
-    self.assertTrue(resp4.status_code==200)
+    resp4b = self.client.post(url_for('foods.branded_food',nix_item_id=big_mac_id,data = {
+      'serving_unit':'212.00',
+      'serving_qty':777.00
+    }))
+    self.assertTrue(resp4a.status_code==200)
+    self.assertTrue(resp4b.status_code==302)
 
     # Filling in form data when request method is GET
     resp5 = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id,serving_unit=212.00,serving_qty=999.00))
