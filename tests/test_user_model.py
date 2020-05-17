@@ -33,6 +33,19 @@ class UserModelTestCase(unittest.TestCase):
     u1 = User(password='one')
     u2 = User(password='one')
     self.assertTrue(u1.password_hash != u2.password_hash)
+
+  def test_email_username_id_repr_tablename(self):
+    u1 = User(email='test@test.com',username='test',password='test')
+    db.session.add(u1)
+    db.session.commit()
+    print(dir(u1))
+
+    self.assertEqual(u1.email,'test@test.com')
+    self.assertEqual(u1.username,'test')
+    self.assertEqual(u1.id,1)
+    self.assertEqual(u1.__repr__(),'<User test>')
+    self.assertEqual(u1.__tablename__, 'users')
+
   
   def test_non_unique_email(self):
     u1 = User(email='one@one.com', username='one', password='one')
@@ -55,3 +68,4 @@ class UserModelTestCase(unittest.TestCase):
     with self.assertRaises(IntegrityError):
       db.session.add(u2)
       db.session.commit()
+  

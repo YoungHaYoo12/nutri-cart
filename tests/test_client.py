@@ -433,7 +433,6 @@ class FlaskAuthTestCase(FlaskClientTestCase):
       'email':'one@one.com',
       'password':'one'
     }, follow_redirects=True)
-    print(response9.get_data(as_text=True))
     self.assertEqual(response9.status_code,200)
     self.assertTrue('Logged In Successfully' in response9.get_data(as_text=True))
 
