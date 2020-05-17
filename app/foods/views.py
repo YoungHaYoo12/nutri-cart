@@ -61,11 +61,9 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
   if form.validate_on_submit():
     return redirect(url_for('foods.common_food',food_name=food_name,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
   elif request.method == 'GET':
-    try:
-      form.serving_qty.data = Decimal(serving_qty)
-      form.serving_unit.data = str(serving_unit)
-    except:
-      pass
+    form.serving_qty.data = Decimal(serving_qty)
+    form.serving_unit.data = str(serving_unit)
+
 
   return render_template('foods/food.html',food_info=food_info,form=form, nutrient_categories_units=nutrient_categories_units)
 
@@ -110,11 +108,8 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
   if form.validate_on_submit():
     return redirect(url_for('foods.branded_food',nix_item_id=nix_item_id,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
   elif request.method == 'GET':
-    try:
-      form.serving_qty.data = Decimal(serving_qty)
-      form.serving_unit.data = str(serving_unit)
-    except:
-      pass
+    form.serving_qty.data = Decimal(serving_qty)
+    form.serving_unit.data = str(serving_unit)
 
   return render_template('foods/food.html',food_info=food_info,form=form, nutrient_categories_units=nutrient_categories_units)
 
