@@ -43,8 +43,6 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
     serving_qty = round(Decimal(serving_qty),2)
   except InvalidOperation:
     abort(404)
-  except TypeError:
-    abort(404)
 
   measures_tuple = get_measures_tuple(food_info)
   if not is_in_tuple_list(str(serving_unit),measures_tuple):
@@ -93,8 +91,6 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
     serving_unit = round(Decimal(serving_unit),2)
     serving_qty = round(Decimal(serving_qty),2)
   except InvalidOperation:
-    abort(404)
-  except TypeError:
     abort(404)
 
   measures_tuple = get_measures_tuple(food_info)
