@@ -5,16 +5,16 @@ from wtforms import ValidationError
 from app.models import User
 
 class LoginForm(FlaskForm):
-  email = StringField('Email', validators=[DataRequired(), Email(), Length(1,64)])
-  password = PasswordField('Password', validators=[DataRequired()])
+  email = StringField('Email', validators=[DataRequired(message="Email Field Empty"), Email(message="Email Format Not Correct"), Length(1,64)])
+  password = PasswordField('Password', validators=[DataRequired(message="Password Field Empty")])
   remember_me = BooleanField('Keep Me Logged In')
   submit = SubmitField('Log In')
 
 class RegistrationForm(FlaskForm):
-  email = StringField('Email', validators=[DataRequired(), Length(1,64), Email()])
-  username = StringField('Username', validators=[DataRequired(), Length(1,64)])
-  password = PasswordField('Password', validators=[DataRequired(), EqualTo('password2', message='Passwords Must Match')])
-  password2 = PasswordField('Confirm Password', validators=[DataRequired()])
+  email = StringField('Email', validators=[DataRequired(message="Email Field Empty"), Length(1,64), Email(message="Email Format Not Correct")])
+  username = StringField('Username', validators=[DataRequired(message="Username Field Empty"), Length(1,64)])
+  password = PasswordField('Password', validators=[DataRequired(message="Password Field Empty"), EqualTo('password2', message='Passwords Must Match')])
+  password2 = PasswordField('Confirm Password', validators=[DataRequired("Confirm Password Field Empty")])
   submit = SubmitField('Register')
 
   def validate_email(self, field):
