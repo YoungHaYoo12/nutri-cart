@@ -38,7 +38,6 @@ class UserModelTestCase(unittest.TestCase):
     u1 = User(email='test@test.com',username='test',password='test')
     db.session.add(u1)
     db.session.commit()
-    print(dir(u1))
 
     self.assertEqual(u1.email,'test@test.com')
     self.assertEqual(u1.username,'test')
