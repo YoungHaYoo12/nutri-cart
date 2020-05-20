@@ -219,10 +219,10 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     }),follow_redirects=True)
     resp4b = self.client.post(url_for('foods.common_food',food_name='eggs',data = {
       'serving_unit':'50.00',
-      'serving_qty':777.00
+      'serving_qty':Decimal(777)
     }))    
     self.assertTrue(resp4a.status_code==200)
-    self.assertTrue(resp4b.status_code==302)
+    self.assertTrue(resp4b.status_code==200)
 
     # Filling in form data when request method is GET
     resp5 = self.client.get(url_for('foods.common_food',food_name='eggs',serving_unit='63.00',serving_qty='999.00'))
@@ -316,7 +316,7 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
       'serving_qty':777.00
     }))
     self.assertTrue(resp4a.status_code==200)
-    self.assertTrue(resp4b.status_code==302)
+    self.assertTrue(resp4b.status_code==200)
 
     # Filling in form data when request method is GET
     resp5 = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id,serving_unit=212.00,serving_qty=999.00))
