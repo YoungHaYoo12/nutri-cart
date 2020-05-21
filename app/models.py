@@ -1,6 +1,7 @@
 from app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
+from decimal import Decimal
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -47,18 +48,19 @@ class FoodItem(db.Model):
 
   cart_id = db.Column(db.Integer, db.ForeignKey('carts.id'))
 
-  def __init__(self,nf_calories,nf_total_fat,nf_saturated_fat,nf_cholesterol,nf_sodium,nf_total_carbohydrate,nf_dietary_fiber,nf_sugars,nf_protein,nutrient_multiplier, serving_qty, serving_unit):
-    self.nf_calories = nf_calories * nutrient_multiplier 
-    self.nf_total_fat = nf_total_fat * nutrient_multiplier
-    self.nf_saturated_fat = nf_saturated_fat * nutrient_multiplier
-    self.nf_cholesterol = nf_cholesterol * nutrient_multiplier
-    self.nf_sodium = nf_sodium * nutrient_multiplier
-    self.nf_total_carbohydrate = nf_total_carbohydrate * nutrient_multiplier
-    self.nf_dietary_fiber = nf_dietary_fiber * nutrient_multiplier
-    self.nf_sugars = nf_sugars * nutrient_multiplier
-    self.nf_protein = nf_protein * nutrient_multiplier 
-    self.serving_qty = serving_qty
-    self.serving_unit = serving_unit
+  def __init__(self,name,nf_calories=None,nf_total_fat=None,nf_saturated_fat=None,nf_cholesterol=None,nf_sodium=None,nf_total_carbohydrate=None,nf_dietary_fiber=None,nf_sugars=None,nf_protein=None,nutrient_multiplier=None, serving_qty=None, serving_unit=None):
+    self.name = name
+    self.nf_calories = nf_calories * nutrient_multiplier or Decimal(0)
+    self.nf_total_fat = nf_total_fat * nutrient_multiplier or Decimal(0)
+    self.nf_saturated_fat = nf_saturated_fat * nutrient_multiplier or Decimal(0)
+    self.nf_cholesterol = nf_cholesterol * nutrient_multiplier or Decimal(0)
+    self.nf_sodium = nf_sodium * nutrient_multiplier or Decimal(0)
+    self.nf_total_carbohydrate = nf_total_carbohydrate * nutrient_multiplier or Decimal(0)
+    self.nf_dietary_fiber = nf_dietary_fiber * nutrient_multiplier or Decimal(0)
+    self.nf_sugars = nf_sugars * nutrient_multiplier or Decimal(0)
+    self.nf_protein = nf_protein * nutrient_multiplier or Decimal(0)
+    self.serving_qty = serving_qty or Decimal(0)
+    self.serving_unit = serving_unit or Decimal(0)
   
   def __repr__(self):
     return f"{self.name} in {self.cart}"
@@ -116,15 +118,15 @@ class Cart(db.Model):
 
   def __init__(self, cart_num):
     self.cart_num = cart_num
-    self.nf_calories = 0
-    self.nf_total_fat = 0
-    self.nf_saturated_fat = 0
-    self.nf_cholesterol = 0
-    self.nf_sodium = 0
-    self.nf_total_carbohydrate = 0
-    self.nf_dietary_fiber = 0
-    self.nf_sugars = 0
-    self.nf_protein = 0
+    self.nf_calories = Decimal(0)
+    self.nf_total_fat = Decimal(0)
+    self.nf_saturated_fat = Decimal(0)
+    self.nf_cholesterol = Decimal(0)
+    self.nf_sodium = Decimal(0)
+    self.nf_total_carbohydrate = Decimal(0)
+    self.nf_dietary_fiber = Decimal(0)
+    self.nf_sugars = Decimal(0)
+    self.nf_protein = Decimal(0)
 
   def __repr__(self):
     return f"Cart {self.cart_num} of {self.user}"
