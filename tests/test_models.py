@@ -3,7 +3,7 @@ from sqlalchemy.exc import IntegrityError
 from app import create_app, db
 from app.models import User
 
-class UserModelTestCase(unittest.TestCase):
+class FlaskTestCase(unittest.TestCase):
   def setUp(self):
     self.app = create_app('testing')
     self.app_context = self.app.app_context()
@@ -14,7 +14,8 @@ class UserModelTestCase(unittest.TestCase):
     db.session.remove()
     db.drop_all()
     self.app_context.pop()
-  
+
+class UserModelTestCase(unittest.TestCase):
   def test_password_setter(self):
     u = User(password='one')
     self.assertTrue(u.password_hash is not None)
@@ -67,4 +68,3 @@ class UserModelTestCase(unittest.TestCase):
     with self.assertRaises(IntegrityError):
       db.session.add(u2)
       db.session.commit()
-  
