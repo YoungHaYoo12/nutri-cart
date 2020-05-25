@@ -52,7 +52,7 @@ class FoodItem(db.Model):
   def __init__(self,name,nf_calories=None,nf_total_fat=None,nf_saturated_fat=None,nf_cholesterol=None,nf_sodium=None,nf_total_carbohydrate=None,nf_dietary_fiber=None,nf_sugars=None,nf_protein=None,nutrient_multiplier=None, serving_qty=None, serving_unit=None):
     if nutrient_multiplier is None:
       nutrient_multiplier = Decimal(1)
-
+    
     self.name = name
     self.nf_calories = nf_calories * nutrient_multiplier or Decimal(0)
     self.nf_total_fat = nf_total_fat * nutrient_multiplier or Decimal(0)
@@ -100,7 +100,7 @@ class Cart(db.Model):
     nf_sugars_sum = 0
     nf_protein_sum = 0
 
-    for food in self.foods.all():
+    for food in self.foods:
       nf_calories_sum += food.nf_calories
       nf_total_fat_sum += food.nf_total_fat
       nf_saturated_fat_sum += food.nf_saturated_fat
