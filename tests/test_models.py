@@ -15,7 +15,7 @@ class FlaskTestCase(unittest.TestCase):
     db.drop_all()
     self.app_context.pop()
 
-class UserModelTestCase(unittest.TestCase):
+class UserModelTestCase(FlaskTestCase):
   def test_password_setter(self):
     u = User(password='one')
     self.assertTrue(u.password_hash is not None)
