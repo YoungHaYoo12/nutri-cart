@@ -5,17 +5,10 @@
     <div class="jumbotron">
       <h1 class="display-4 text-capitalize">{{food_info.food_name}}</h1>
       <div class="btn-group btn-block">
-        <button type="button" class="btn btn-primary btn-lg btn-block">Add</button>
-        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <span class="sr-only">Toggle Dropdown</span>
-        </button>
-        <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
-          <div class="dropdown-divider"></div>
-          <a class="dropdown-item" href="#">Separated link</a>
-        </div>
+        <form method="POST">
+          {{add_form.hidden_tag()}}
+          {{add_form.add(class="btn btn-primary btn-lg btn-block")}}
+        </form>
       </div>
 
       <div class="jumbotron-body">

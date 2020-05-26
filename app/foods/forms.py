@@ -6,3 +6,6 @@ class FoodServingForm(FlaskForm):
   serving_qty = DecimalField('Serving Quantity',validators=[DataRequired()])
   serving_unit = SelectField('Serving Unit')
   submit = SubmitField('Refresh')
+
+class AddFoodForm(FlaskForm):
+  add = SubmitField('Add')

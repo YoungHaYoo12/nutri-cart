@@ -1,7 +1,7 @@
 from decimal import Decimal, InvalidOperation
 from flask import render_template, redirect, url_for,request,abort
 from app.foods import foods
-from app.foods.forms import FoodServingForm
+from app.foods.forms import FoodServingForm, AddFoodForm
 from nutritionix import search_item, get_common_nutrients, get_branded_nutrients, nutrient_categories, nutrient_categories_units
 
 ######################################
@@ -56,16 +56,19 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
 
   # FORM PROCESSING
   form = FoodServingForm()
+  add_form=AddFoodForm()
   form.serving_unit.choices = measures_tuple
 
-  if form.validate_on_submit():
-    return redirect(url_for('foods.common_food',food_name=food_name,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
+  if form.validate_on_submit() and form.submit.data:
+    return redirect(url_for('foods.common_food',food_name=food_name,serving_unit=form.serving_unit.datform.submit.dataa,serving_qty=form.serving_qty.data))
+  elif add_form.validate_on_submit() and add_form.add.data:
+    print('ADD FORM')
   elif request.method == 'GET':
     form.serving_qty.data = Decimal(serving_qty)
     form.serving_unit.data = str(serving_unit)
 
 
-  return render_template('foods/food.html',food_info=food_info,form=form, nutrient_categories_units=nutrient_categories_units)
+  return render_template('foods/food.html',food_info=food_info,form=form,add_form=add_form,nutrient_categories_units=nutrient_categories_units)
 
 # Detail Page For Common Food
 @foods.route('/branded/<nix_item_id>', methods=['GET','POST'])
@@ -103,15 +106,19 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
 
   # FORM PROCESSING
   form = FoodServingForm()
+  add_form = AddFoodForm()
   form.serving_unit.choices = measures_tuple
 
-  if form.validate_on_submit():
+  if form.validate_on_submit() and form.submit.data:
     return redirect(url_for('foods.branded_food',nix_item_id=nix_item_id,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
+  elif add_form.validate_on_submit() and add_form.add.data:
+    print("ADD FORM")
   elif request.method == 'GET':
     form.serving_qty.data = Decimal(serving_qty)
     form.serving_unit.data = str(serving_unit)
 
-  return render_template('foods/food.html',food_info=food_info,form=form, nutrient_categories_units=nutrient_categories_units)
+  return render_template('foods/food.html',food_info=food_info,form=form, add_form=add_form,nutrient_categories_units=nutrient_categories_units)
+
 
 ######################################
 # HELPER FUNCTIONS
