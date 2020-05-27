@@ -31,6 +31,9 @@
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('auth.logout')}}">Sign Out</a>
               </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{{url_for('carts.list')}}">Carts</a>
+              </li>
             {% else %}
               <li class="nav-item">
                 <a class="nav-link" href="{{url_for('auth.login')}}">Sign In</a>
