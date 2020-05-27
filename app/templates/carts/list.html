@@ -3,6 +3,7 @@
 <h1>Carts for {{current_user.username}}</h1>
 {% for cart in carts %}
   <h1>Cart {{loop.index}}</h1>
+  <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
 {% endfor %}
 
 <a class="btn btn-primary" href="{{url_for('carts.add')}}">Add Cart</a>
