@@ -4,4 +4,6 @@
 {% for cart in carts %}
   <h1>Cart {{cart.cart_num}}</h1>
 {% endfor %}
+
+<a class="btn btn-primary" href="{{url_for('carts.add')}}">Add Cart</a>
 {%  endblock %}
