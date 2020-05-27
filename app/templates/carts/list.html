@@ -1,10 +1,18 @@
 {%  extends "base.html" %}
+{% import "_macros.html" as macros  %}
 {% block content %}
 <h1>Carts for {{current_user.username}}</h1>
 {% for cart in carts %}
-  <h1>Cart {{loop.index}}</h1>
+  <h1>Cart {{loop.index}} + {{cart_counter}}</h1>
   <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
 {% endfor %}
 
 <a class="btn btn-primary" href="{{url_for('carts.add')}}">Add Cart</a>
+
+{% if pagination %}
+<div class="pagination">
+    {{ macros.pagination_widget(pagination, 'carts.list') }}
+</div>
+{% endif %}
+
 {%  endblock %}

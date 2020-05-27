@@ -10,7 +10,8 @@ def list():
   page = request.args.get('page',1,type=int)
   pagination = current_user.carts.paginate(page,per_page=4)
   carts = pagination.items
-  return render_template('carts/list.html',carts=carts,pagination=pagination)
+  cart_counter = (page-1)*4
+  return render_template('carts/list.html',carts=carts,pagination=pagination,cart_counter=cart_counter)
 
 @carts.route('/add_cart')
 @login_required
