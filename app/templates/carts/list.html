@@ -2,7 +2,7 @@
 {% block content %}
 <h1>Carts for {{current_user.username}}</h1>
 {% for cart in carts %}
-  <h1>Cart {{cart.cart_num}}</h1>
+  <h1>Cart {{loop.index}}</h1>
 {% endfor %}
 
 <a class="btn btn-primary" href="{{url_for('carts.add')}}">Add Cart</a>
