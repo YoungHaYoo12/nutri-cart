@@ -13,7 +13,7 @@ class User(db.Model, UserMixin):
   username = db.Column(db.String(64), unique=True, index=True)
   email = db.Column(db.String(64), unique=True, index=True)
   password_hash = db.Column(db.String(128))
-  carts = db.relationship('Cart', backref='user', cascade="all, delete-orphan")
+  carts = db.relationship('Cart', backref='user', lazy='dynamic',cascade="all, delete-orphan")
 
   @property
   def password(self):
