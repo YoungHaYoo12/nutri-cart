@@ -1,0 +1,7 @@
+{%  extends "base.html" %}
+{% block content %}
+<h1>Carts for {{current_user.username}}</h1>
+{% for cart in carts %}
+  <h1>Cart {{cart.num}}</h1>
+{% endfor %}
+{%  endblock %}
