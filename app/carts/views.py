@@ -17,8 +17,7 @@ def list():
 @carts.route('/add_cart')
 @login_required
 def add():
-  num_of_carts = len(current_user.carts.all())
-  cart = Cart(num_of_carts + 1)
+  cart = Cart()
   cart.user = current_user
   db.session.add(cart)
   db.session.commit()

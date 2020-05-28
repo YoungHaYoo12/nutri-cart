@@ -152,10 +152,9 @@ class FoodItemModelTestCase(FlaskTestCase):
 
 class CartModelTestCase(FlaskTestCase):
   def test_default_values(self):
-    cart1 = Cart(1)
+    cart1 = Cart()
 
     # test initial values given to Cart fields 
-    self.assertTrue(cart1.cart_num==1)
     self.assertTrue(cart1.nf_calories == Decimal(0))
     self.assertTrue(cart1.nf_total_fat == Decimal(0))
     self.assertTrue(cart1.nf_saturated_fat == Decimal(0))
@@ -191,7 +190,7 @@ class CartModelTestCase(FlaskTestCase):
     nf_protein=Decimal(19),
     nutrient_multiplier=Decimal(1))
 
-    cart2 = Cart(2)
+    cart2 = Cart()
     food1.cart = cart2
     food2.cart = cart2
 
@@ -231,8 +230,8 @@ class CartModelTestCase(FlaskTestCase):
     nf_protein=Decimal(19),
     nutrient_multiplier=Decimal(1))
 
-    cart1 = Cart(1)
-    cart2 = Cart(2)
+    cart1 = Cart()
+    cart2 = Cart()
 
     user1 = User(email="one@one.com",username="one",password="one")
     user2 = User(email="two@two.com",username="two",password="two")
@@ -249,6 +248,6 @@ class CartModelTestCase(FlaskTestCase):
     self.assertTrue(cart2.user == user2)
 
     # test relationships are showed in __repr__
-    self.assertTrue(food1.__repr__() == 'food1 in Cart 1 of <User one>')
-    self.assertTrue(cart1.__repr__() == 'Cart 1 of <User one>')
+    self.assertTrue(food1.__repr__() == 'food1 in Cart of <User one>')
+    self.assertTrue(cart1.__repr__() == 'Cart of <User one>')
     self.assertTrue(user1.__repr__() == '<User one>')

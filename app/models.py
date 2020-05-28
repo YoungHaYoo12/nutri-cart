@@ -74,7 +74,6 @@ class Cart(db.Model):
   __tablename__ = 'carts'
 
   id = db.Column(db.Integer, primary_key=True)
-  cart_num = db.Column(db.Integer)
   foods = db.relationship('FoodItem', backref='cart', cascade="all, delete-orphan")
   user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
@@ -121,8 +120,7 @@ class Cart(db.Model):
     self.nf_sugars = nf_sugars_sum
     self.nf_protein = nf_protein_sum
 
-  def __init__(self, cart_num):
-    self.cart_num = cart_num
+  def __init__(self):
     self.nf_calories = Decimal(0)
     self.nf_total_fat = Decimal(0)
     self.nf_saturated_fat = Decimal(0)
@@ -134,4 +132,4 @@ class Cart(db.Model):
     self.nf_protein = Decimal(0)
 
   def __repr__(self):
-    return f"Cart {self.cart_num} of {self.user}"
+    return f"Cart of {self.user}"
