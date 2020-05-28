@@ -24,6 +24,7 @@ def add():
   return redirect(url_for('carts.list'))
 
 @carts.route('/delete/<int:id>')
+@login_required
 def delete(id):
   cart = Cart.query.get_or_404(id)
   db.session.delete(cart)
