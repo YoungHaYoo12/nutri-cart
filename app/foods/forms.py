@@ -9,3 +9,7 @@ class FoodServingForm(FlaskForm):
 
 class AddFoodForm(FlaskForm):
   add = SubmitField('Add')
+  
+class AddFoodToCartForm(FlaskForm):
+  cart_id = SelectField('Select Cart')
+  submit = SubmitField('Add')

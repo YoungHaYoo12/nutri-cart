@@ -1,7 +1,10 @@
 from decimal import Decimal, InvalidOperation
-from flask import render_template, redirect, url_for,request,abort
+from flask import render_template, redirect, url_for,request,abort, session
+from flask_login import login_required, current_user
+from app import db
+from app.models import Cart, FoodItem
 from app.foods import foods
-from app.foods.forms import FoodServingForm, AddFoodForm
+from app.foods.forms import FoodServingForm, AddFoodForm, AddFoodToCartForm
 from nutritionix import search_item, get_common_nutrients, get_branded_nutrients, nutrient_categories, nutrient_categories_units
 
 ######################################
@@ -60,9 +63,12 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
   form.serving_unit.choices = measures_tuple
 
   if form.validate_on_submit() and form.submit.data:
-    return redirect(url_for('foods.common_food',food_name=food_name,serving_unit=form.serving_unit.datform.submit.dataa,serving_qty=form.serving_qty.data))
+    return redirect(url_for('foods.common_food',food_name=food_name,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
   elif add_form.validate_on_submit() and add_form.add.data:
-    print('ADD FORM')
+    session['food_info'] = food_info
+    session['serving_unit'] = serving_unit
+    session['serving_qty'] = serving_qty
+    return redirect(url_for('foods.add_food'))
   elif request.method == 'GET':
     form.serving_qty.data = Decimal(serving_qty)
     form.serving_unit.data = str(serving_unit)
@@ -112,14 +118,54 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
   if form.validate_on_submit() and form.submit.data:
     return redirect(url_for('foods.branded_food',nix_item_id=nix_item_id,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
   elif add_form.validate_on_submit() and add_form.add.data:
-    print("ADD FORM")
+    session['food_info'] = food_info
+    session['serving_unit'] = serving_unit
+    session['serving_qty'] = serving_qty
+    return redirect(url_for('foods.add_food'))
   elif request.method == 'GET':
     form.serving_qty.data = Decimal(serving_qty)
     form.serving_unit.data = str(serving_unit)
 
   return render_template('foods/food.html',food_info=food_info,form=form, add_form=add_form,nutrient_categories_units=nutrient_categories_units)
 
-
+@foods.route('/add_food', methods=['POST','GET'])
+@login_required
+def add_food():
+  form = AddFoodToCartForm()
+  
+  # form processing
+  cart_id_tuple = []
+  carts = current_user.carts.order_by(Cart.id.asc()).all()
+  for i in range(len(carts)):
+    cart_id_tuple.append((str(carts[i].id),i+1))
+  form.cart_id.choices = cart_id_tuple
+  
+  if form.validate_on_submit():
+    # get cart
+    cart = Cart.query.get_or_404(int(form.cart_id.data))
+    
+    # create food and add to cart
+    food_info = session.get('food_info')
+    food = FoodItem(name=food_info['food_name'],
+    nf_calories=food_info['nf_calories'],
+    nf_total_fat=food_info['nf_total_fat'],
+    nf_saturated_fat=food_info['nf_saturated_fat'],
+    nf_cholesterol=food_info['nf_cholesterol'],
+    nf_sodium=food_info['nf_sodium'],
+    nf_total_carbohydrate=food_info['nf_total_carbohydrate'],
+    nf_dietary_fiber=food_info['nf_dietary_fiber'],
+    nf_sugars=food_info['nf_sugars'],
+    nf_protein=food_info['nf_protein'],
+    serving_unit=session.get('serving_unit'),
+    serving_qty=session.get('serving_qty')
+    )
+    food.cart = cart
+    db.session.add(food)
+    db.session.commit()
+    
+    return redirect(url_for('carts.list'))
+  
+  return render_template('foods/add_food.html',form=form)
 ######################################
 # HELPER FUNCTIONS
 
@@ -153,7 +199,7 @@ def get_nutrient_multiplier(original_serving_weight,new_serving_weight, qty):
 # Update nutrient categories by nutrient multiplier when serving unit and quantity change
 def update_nutrients(food_info, nutrient_multiplier, nutrient_categories):
   for category in nutrient_categories:
-    food_info[category] = food_info[category] * nutrient_multiplier
+    food_info[category] = Decimal( food_info[category] * nutrient_multiplier)
 
 # function to clean up "None" values in food_info
 def clean_food_data(food_info, nutrient_categories):
