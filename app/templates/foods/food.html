@@ -4,12 +4,14 @@
   <div class="container">
     <div class="jumbotron">
       <h1 class="display-4 text-capitalize">{{food_info.food_name}}</h1>
+      {%  if current_user.is_authenticated %}
       <div class="btn-group btn-block">
         <form method="POST">
           {{add_form.hidden_tag()}}
           {{add_form.add(class="btn btn-primary btn-lg btn-block")}}
         </form>
       </div>
+      {% endif  %}
 
       <div class="jumbotron-body">
         <div class="jumbotron-body-text">
