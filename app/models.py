@@ -49,9 +49,7 @@ class FoodItem(db.Model):
   cart_id = db.Column(db.Integer, db.ForeignKey('carts.id'))
 
   def __init__(self,name,nf_calories=None,nf_total_fat=None,nf_saturated_fat=None,nf_cholesterol=None,nf_sodium=None,nf_total_carbohydrate=None,nf_dietary_fiber=None,nf_sugars=None,nf_protein=None, serving_qty=None, serving_unit=None):
-    if nutrient_multiplier is None:
-      nutrient_multiplier = Decimal(1)
-    
+  
     self.name = name
     self.nf_calories = Decimal(nf_calories)
     self.nf_total_fat = Decimal(nf_total_fat)
