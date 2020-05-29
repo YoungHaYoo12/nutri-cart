@@ -84,7 +84,6 @@ class FoodItemModelTestCase(FlaskTestCase):
     nf_protein = Decimal(9.00)
     serving_qty = Decimal(10.00)
     serving_unit='serving'
-    nutrient_multiplier = Decimal(2.00)
 
     food1 = FoodItem(name=name,
     nf_calories=nf_calories,
@@ -97,8 +96,7 @@ class FoodItemModelTestCase(FlaskTestCase):
     nf_sugars=nf_sugars,
     nf_protein=nf_protein,
     serving_qty=serving_qty,
-    serving_unit=serving_unit,
-    nutrient_multiplier=nutrient_multiplier
+    serving_unit=serving_unit
     )
 
     # check type decimal
@@ -113,42 +111,16 @@ class FoodItemModelTestCase(FlaskTestCase):
     self.assertTrue(type(food1.nf_protein) == Decimal)
     self.assertTrue(type(food1.serving_qty) == Decimal)
 
-    # check whether nutrient_multiplier is multiplied to nutrients
-    self.assertTrue(food1.nf_calories == Decimal(2))
-    self.assertTrue(food1.nf_total_fat == Decimal(4))
-    self.assertTrue(food1.nf_cholesterol == Decimal(6))
-    self.assertTrue(food1.nf_saturated_fat == Decimal(8))
-    self.assertTrue(food1.nf_sodium == Decimal(10))
-    self.assertTrue(food1.nf_total_carbohydrate == Decimal(12))
-    self.assertTrue(food1.nf_dietary_fiber == Decimal(14))
-    self.assertTrue(food1.nf_sugars == Decimal(16))
-    self.assertTrue(food1.nf_protein == Decimal(18))
-
-    # check default value of nutrient_multiplier 
-    name = 'food2'
-    food2 = FoodItem(name=name,
-    nf_calories=nf_calories,
-    nf_total_fat=nf_total_fat,
-    nf_cholesterol=nf_cholesterol,
-    nf_saturated_fat=nf_saturated_fat,
-    nf_sodium=nf_sodium,
-    nf_total_carbohydrate=nf_total_carbohydrate,
-    nf_dietary_fiber=nf_dietary_fiber,
-    nf_sugars=nf_sugars,
-    nf_protein=nf_protein,
-    serving_qty=serving_qty,
-    serving_unit=serving_unit,
-    )    
-    self.assertTrue(food2.nutrient_multiplier == Decimal(1))
-    self.assertTrue(food2.nf_calories == Decimal(1))
-    self.assertTrue(food2.nf_total_fat == Decimal(2))
-    self.assertTrue(food2.nf_cholesterol == Decimal(3))
-    self.assertTrue(food2.nf_saturated_fat == Decimal(4))
-    self.assertTrue(food2.nf_sodium == Decimal(5))
-    self.assertTrue(food2.nf_total_carbohydrate == Decimal(6))
-    self.assertTrue(food2.nf_dietary_fiber == Decimal(7))
-    self.assertTrue(food2.nf_sugars == Decimal(8))
-    self.assertTrue(food2.nf_protein == Decimal(9))
+    # check nutrient values
+    self.assertTrue(food1.nf_calories == Decimal(1))
+    self.assertTrue(food1.nf_total_fat == Decimal(2))
+    self.assertTrue(food1.nf_cholesterol == Decimal(3))
+    self.assertTrue(food1.nf_saturated_fat == Decimal(4))
+    self.assertTrue(food1.nf_sodium == Decimal(5))
+    self.assertTrue(food1.nf_total_carbohydrate == Decimal(6))
+    self.assertTrue(food1.nf_dietary_fiber == Decimal(7))
+    self.assertTrue(food1.nf_sugars == Decimal(8))
+    self.assertTrue(food1.nf_protein == Decimal(9))
 
 class CartModelTestCase(FlaskTestCase):
   def test_default_values(self):
@@ -175,8 +147,7 @@ class CartModelTestCase(FlaskTestCase):
     nf_total_carbohydrate=Decimal(6),
     nf_dietary_fiber=Decimal(7),
     nf_sugars=Decimal(8),
-    nf_protein=Decimal(9),
-    nutrient_multiplier=Decimal(1))
+    nf_protein=Decimal(9))
 
     food2 = FoodItem(name='food2',
     nf_calories=Decimal(11),
@@ -187,8 +158,7 @@ class CartModelTestCase(FlaskTestCase):
     nf_total_carbohydrate=Decimal(16),
     nf_dietary_fiber=Decimal(17),
     nf_sugars=Decimal(18),
-    nf_protein=Decimal(19),
-    nutrient_multiplier=Decimal(1))
+    nf_protein=Decimal(19))
 
     cart2 = Cart()
     food1.cart = cart2
@@ -215,8 +185,7 @@ class CartModelTestCase(FlaskTestCase):
     nf_total_carbohydrate=Decimal(6),
     nf_dietary_fiber=Decimal(7),
     nf_sugars=Decimal(8),
-    nf_protein=Decimal(9),
-    nutrient_multiplier=Decimal(1))
+    nf_protein=Decimal(9))
 
     food2 = FoodItem(name='food2',
     nf_calories=Decimal(11),
@@ -227,8 +196,7 @@ class CartModelTestCase(FlaskTestCase):
     nf_total_carbohydrate=Decimal(16),
     nf_dietary_fiber=Decimal(17),
     nf_sugars=Decimal(18),
-    nf_protein=Decimal(19),
-    nutrient_multiplier=Decimal(1))
+    nf_protein=Decimal(19))
 
     cart1 = Cart()
     cart2 = Cart()
