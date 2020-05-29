@@ -5,6 +5,10 @@
 {% for cart in carts %}
   {% with counter=loop.index0 %}
   <h1>Cart {{cart_counter[counter]}}</h1>
+  {% for food in cart.foods %}
+  <h6>{{food.name}}</h6>
+  <p>{{food.nf_calories}}</p>
+  {% endfor  %}
   <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
   {% endwith %}
 {% endfor %}

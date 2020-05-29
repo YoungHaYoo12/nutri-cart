@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{%  block content %}
+<h1>Add Food</h1>
+<form method="POST">
+  {{form.hidden_tag()}}
+  {{form.cart_id.label}}{{form.cart_id()}}
+  {{form.submit()}}
+</form>
+{% endblock %}

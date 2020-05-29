@@ -1,8 +1,8 @@
-"""test
+"""first migration
 
-Revision ID: 5b7bcd5d972f
-Revises: 6cf5b3d7956d
-Create Date: 2020-05-28 08:47:50.669464
+Revision ID: 75de31ddec07
+Revises: 
+Create Date: 2020-05-29 08:27:25.425524
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '5b7bcd5d972f'
-down_revision = '6cf5b3d7956d'
+revision = '75de31ddec07'
+down_revision = None
 branch_labels = None
 depends_on = None
 
@@ -29,7 +29,6 @@ def upgrade():
     op.create_index(op.f('ix_users_username'), 'users', ['username'], unique=True)
     op.create_table('carts',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('cart_num', sa.Integer(), nullable=True),
     sa.Column('user_id', sa.Integer(), nullable=True),
     sa.Column('nf_calories', sa.Numeric(decimal_return_scale=2), nullable=True),
     sa.Column('nf_total_fat', sa.Numeric(decimal_return_scale=2), nullable=True),
@@ -55,7 +54,6 @@ def upgrade():
     sa.Column('nf_dietary_fiber', sa.Numeric(decimal_return_scale=2), nullable=True),
     sa.Column('nf_sugars', sa.Numeric(decimal_return_scale=2), nullable=True),
     sa.Column('nf_protein', sa.Numeric(decimal_return_scale=2), nullable=True),
-    sa.Column('nutrient_multiplier', sa.Numeric(decimal_return_scale=2), nullable=True),
     sa.Column('serving_qty', sa.Numeric(decimal_return_scale=2), nullable=True),
     sa.Column('serving_unit', sa.String(length=32), nullable=True),
     sa.Column('cart_id', sa.Integer(), nullable=True),
