@@ -5,21 +5,6 @@
 {% for cart in carts %}
   {% with counter=loop.index0 %}
   <h1>Cart {{cart_counter[counter]}}</h1>
-  {% for food in cart.foods %}
-  <h6>{{food.name}}</h6>
-  <p>Calories: {{food.nf_calories}}</p>
-  <p>Total Fat: {{food.nf_total_fat}}</p>
-  <p>Saturated Fat: {{food.saturated_fat}}</p>
-  <p>Cholesterol: {{food.nf_cholesterol}}</p>
-  <p>Sodium: {{food.nf_sodium}}</p>
-  <p>Total Carbohydrate: {{food.nf_total_carbohydrate}}</p>
-  <p>Dietary Fiber: {{food.nf_dietary_fiber}}</p>
-  <p>Sugars: {{food.nf_sugars}}</p>
-  <p>Protein: {{food.nf_protein}}</p>
-  <p>Serving Unit: {{food.serving_unit}}</p>
-  <p>Serving Quantity: {{food.serving_qty}}</p>
-  
-  {% endfor  %}
   <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
   {% endwith %}
 {% endfor %}
