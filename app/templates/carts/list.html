@@ -1,20 +1,62 @@
 {%  extends "base.html" %}
 {% import "_macros.html" as macros  %}
 {% block content %}
-<h1>Carts for {{current_user.username}}</h1>
-{% for cart in carts %}
-  {% with counter=loop.index0 %}
-  <h1>Cart {{cart_counter[counter]}}</h1>
-  <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
-  {% endwith %}
-{% endfor %}
+<div class="carts-list-wrapper">
+  <h1 class="header">Carts for @{{current_user.username}}</h1>
+  <a class="btn btn-primary add-button" href="{{url_for('carts.add')}}">Add Cart</a>
 
-<a class="btn btn-primary" href="{{url_for('carts.add')}}">Add Cart</a>
+  <div class="cards">
+    <div class="row row-cols-1 row-cols-md-2">
+      {% for cart in carts %}
 
-{% if pagination %}
-<div class="pagination">
-    {{ macros.pagination_widget(pagination, 'carts.list') }}
-</div>
-{% endif %}
+          <div class="col mb-4">
+            <div class="card">
+              <img src="{{url_for('static',filename='images/cart.svg')}}" class="card-img-top" alt="...">
+              {% with counter=loop.index0 %}
+              <div class="card-body">
+                <h1 class="card-title">Cart {{cart_counter[counter]}}</h1>
+                <p class="card-text">
+                  Calories: {{cart.nf_calories}}
+                </p>
+                <p class="card-text">
+                  Total Fat: {{cart.nf_total_fat}}
+                </p>
+                <p class="card-text">
+                  Saturated Fat: {{cart.nf_saturated_fat}}
+                </p>
+                <p class="card-text">
+                  Cholesterol: {{cart.nf_cholesterol}}
+                </p>
+                <p class="card-text">
+                  Sodium: {{cart.nf_sodium}}
+                </p>
+                <p class="card-text">
+                  Total Carbohydrate: {{cart.nf_total_carbohydrate}}
+                </p>
+                <p class="card-text">
+                  Dietary Fiber: {{cart.nf_dietary_fiber}}
+                </p>
+                <p class="card-text">
+                  Sugars: {{cart.nf_sugars}}
+                </p>
+                <p class="card-text">
+                  Protein: {{cart.nf_protein}}          
+                </p>
+                <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
+              </div>
+              {% endwith %}
+            </div>
+          </div>
 
+      {% endfor %}
+
+    </div>
+  </div>
+
+    {% if pagination %}
+    <div class="pagination">
+        {{ macros.pagination_widget(pagination, 'carts.list') }}
+    </div>
+    {% endif %}
+  </div>
 {%  endblock %}
