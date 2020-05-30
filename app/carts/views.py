@@ -14,6 +14,12 @@ def list():
   cart_counter = [prev_cart_num+1,prev_cart_num+2,prev_cart_num+3,prev_cart_num+4]
   return render_template('carts/list.html',carts=carts,pagination=pagination,cart_counter=cart_counter)
 
+@carts.route('/cart/<int:id>')
+@login_required
+def cart(id):
+  cart = Cart.query.get_or_404(id)
+  return render_template('carts/cart.html', cart=cart)
+
 @carts.route('/add_cart')
 @login_required
 def add():
