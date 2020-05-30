@@ -16,31 +16,31 @@
               <div class="card-body">
                 <h1 class="card-title">Cart {{cart_counter[counter]}}</h1>
                 <p class="card-text">
-                  Calories: {{cart.nf_calories}}
+                  Calories: {{cart.nf_calories}} {{nutrient_categories_units.nf_calories}}
                 </p>
                 <p class="card-text">
-                  Total Fat: {{cart.nf_total_fat}}
+                  Total Fat: {{cart.nf_total_fat}} {{nutrient_categories_units.nf_total_fat}}
                 </p>
                 <p class="card-text">
-                  Saturated Fat: {{cart.nf_saturated_fat}}
+                  Saturated Fat: {{cart.nf_saturated_fat}} {{nutrient_categories_units.nf_saturated_fat}}
                 </p>
                 <p class="card-text">
-                  Cholesterol: {{cart.nf_cholesterol}}
+                  Cholesterol: {{cart.nf_cholesterol}} {{nutrient_categories_units.nf_cholesterol}}
                 </p>
                 <p class="card-text">
-                  Sodium: {{cart.nf_sodium}}
+                  Sodium: {{cart.nf_sodium}} {{nutrient_categories_units.nf_sodium}}
                 </p>
                 <p class="card-text">
-                  Total Carbohydrate: {{cart.nf_total_carbohydrate}}
+                  Total Carbohydrate: {{cart.nf_total_carbohydrate}} {{nutrient_categories_units.nf_total_carbohydrate}}
                 </p>
                 <p class="card-text">
-                  Dietary Fiber: {{cart.nf_dietary_fiber}}
+                  Dietary Fiber: {{cart.nf_dietary_fiber}} {{nutrient_categories_units.nf_dietary_fiber}}
                 </p>
                 <p class="card-text">
-                  Sugars: {{cart.nf_sugars}}
+                  Sugars: {{cart.nf_sugars}} {{nutrient_categories_units.nf_sugars}}
                 </p>
                 <p class="card-text">
-                  Protein: {{cart.nf_protein}}          
+                  Protein: {{cart.nf_protein}} {{nutrient_categories_units.nf_protein}}           
                 </p>
                 <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
               </div>

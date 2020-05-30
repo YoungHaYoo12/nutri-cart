@@ -3,6 +3,7 @@ from app.carts import carts
 from app.models import Cart
 from flask_login import current_user,login_required
 from flask import render_template, redirect, url_for, request
+from nutritionix import nutrient_categories_units
 
 @carts.route('/list/carts')
 @login_required
@@ -12,7 +13,7 @@ def list():
   carts = pagination.items
   prev_cart_num = (page-1)*4
   cart_counter = [prev_cart_num+1,prev_cart_num+2,prev_cart_num+3,prev_cart_num+4]
-  return render_template('carts/list.html',carts=carts,pagination=pagination,cart_counter=cart_counter)
+  return render_template('carts/list.html',carts=carts,pagination=pagination,cart_counter=cart_counter,nutrient_categories_units=nutrient_categories_units)
 
 @carts.route('/cart/<int:id>')
 @login_required
