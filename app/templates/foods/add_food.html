@@ -1,9 +1,16 @@
 {% extends "base.html" %}
 {%  block content %}
-<h1>Add Food</h1>
-<form method="POST">
-  {{form.hidden_tag()}}
-  {{form.cart_id.label}}{{form.cart_id()}}
-  {{form.submit()}}
-</form>
+<div class="foods-add_food-wrapper">
+  <div class="add_food-form">
+    <form method='POST'>
+      {{form.hidden_tag()}}
+      <div class="form-group">
+        {{form.cart_id.label}}
+        {{form.cart_id(class="form-control")}}
+      </div>
+      {{form.submit(class="btn btn-primary")}}
+    </form>
+  </div>
+</div>
+
 {% endblock %}
