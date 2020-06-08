@@ -42,6 +42,7 @@
                 <p class="card-text">
                   Protein: {{cart.nf_protein}} {{nutrient_categories_units.nf_protein}}           
                 </p>
+                <a class="btn btn-info" href="{{url_for('carts.cart',id=cart.id)}}">View</a>
                 <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
               </div>
               {% endwith %}
