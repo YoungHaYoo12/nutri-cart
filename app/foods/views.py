@@ -255,3 +255,10 @@ def is_in_tuple_list(arg,tuple_list):
       return True
   
   return False
+
+# function to retrieve specific serving_unit from measures_tuple
+def get_str_serving_unit(measures_tuple,serving_unit):
+  for measure in measures_tuple:
+    if measure[0] == serving_unit:
+      return measure[1]
+  return None
