@@ -275,3 +275,12 @@ nav .navbar-nav li a{
   justify-content:center;
   align-items:center;
 }
+
+/* ---------- carts/cart.html ---------- */
+.carts-cart-wrapper .card {
+  margin-bottom:1.3rem;
+}
+
+.carts-cart-wrapper h1 {
+  color:white;
+}

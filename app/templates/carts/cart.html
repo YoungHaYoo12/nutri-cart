@@ -1,7 +1,34 @@
 {% extends "base.html" %}
 {% block content %}
-<div class="jumbotron">
-  <h1>Foods in Cart</h1>
-
+<div class="carts-cart-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-12 text-center">
+        <h1>Foods In Cart</h1>
+        <hr class="my-4">
+      </div>
+      {% for food in foods %}
+      <div class="col-12 col-md-4 col-lg-3 text-center">
+        <div class="card text-center">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+            <h5 class="card-title text-capitalize">{{food.name}}</h5>
+            <p class="card-text">Calories: {{food.nf_calories}} {{nutrient_categories_units.nf_calories}}</p>
+            <p class="card-text">Total Fat: {{food.nf_total_fat}} {{nutrient_categories_units.nf_total_fat}}</p>
+            <p class="card-text">Saturated Fat: {{food.nf_saturated_fat}} {{nutrient_categories_units.nf_saturated_fat}}</p>
+            <p class="card-text">Cholesterol: {{food.nf_cholesterol}} {{nutrient_categories_units.nf_saturated_fat}}</p>
+            <p class="card-text">Sodium: {{food.nf_sodium}} {{nutrient_categories_units.nf_sodium}}</p>
+            <p class="card-text">Total Carbohydrate: {{food.nf_total_carbohydrate}} {{nutrient_categories_units.nf_total_carbohydrate}}</p>
+            <p class="card-text">Dietary Fiber: {{food.nf_dietary_fiber}} {{nutrient_categories_units.nf_dietary_fiber}}</p>
+            <p class="card-text">Sugars: {{food.nf_sugars}} {{nutrient_categories_units.nf_sugars}}</p>
+            <p class="card-text">Protein: {{food.nf_protein}} {{nutrient_categories_units.nf_protein}}</p>
+            <p class="card-text">Serving Quantity: {{food.serving_qty}}</p>
+            <p class="card-text">Serving Unit: {{food.serving_unit}}</p>            
+          </div>
+        </div>             
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 </div>
 {% endblock %}
