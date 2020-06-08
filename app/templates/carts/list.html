@@ -2,8 +2,29 @@
 {% import "_macros.html" as macros  %}
 {% block content %}
 <div class="carts-list-wrapper">
-  <h1 class="header">Carts for @{{current_user.username}}</h1>
-  <a class="btn btn-primary add-button" href="{{url_for('carts.add')}}">Add Cart</a>
+  <div class="row">
+    <h1 class="header col-12">Carts for @{{current_user.username}}</h1>
+    <div class="col-12">
+      <a class="btn btn-primary add-button" href="{{url_for('carts.add')}}">Add Cart</a>
+  <!-- Example single danger button -->
+      <div class="btn-group dropright">
+        <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Sort By
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#">Calories</a>
+          <a class="dropdown-item" href="#">Total Fat</a>
+          <a class="dropdown-item" href="#">Saturated Fat</a>
+          <a class="dropdown-item" href="#">Cholesterol</a>
+          <a class="dropdown-item" href="#">Sodium</a>
+          <a class="dropdown-item" href="#">Total Carbohydrate</a>
+          <a class="dropdown-item" href="#">Dietary Fiber</a>
+          <a class="dropdown-item" href="#">Sugars</a>
+          <a class="dropdown-item" href="#">Protein</a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div class="cards">
     <div class="row row-cols-1 row-cols-md-2">
