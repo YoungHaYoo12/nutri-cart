@@ -1,10 +1,9 @@
 import unittest
 from decimal import Decimal
 from flask import url_for
-from flask_login import login_user, current_user
+from flask_login import current_user
 from app import create_app, db
 from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data,round_food_data,is_in_tuple_list,get_str_serving_unit
-from app.carts.views import list, add, delete, cart
 from app.models import User, Cart, FoodItem
 from nutritionix import nutrient_categories
 
