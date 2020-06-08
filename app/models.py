@@ -34,6 +34,7 @@ class FoodItem(db.Model):
 
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(64),index=True)
+  img_url = db.Column(db.String(64))
   nf_calories = db.Column(db.Numeric(decimal_return_scale=2,asdecimal=True))
   nf_total_fat = db.Column(db.Numeric(decimal_return_scale=2,asdecimal=True))
   nf_saturated_fat = db.Column(db.Numeric(decimal_return_scale=2,asdecimal=True))
@@ -48,9 +49,10 @@ class FoodItem(db.Model):
 
   cart_id = db.Column(db.Integer, db.ForeignKey('carts.id'))
 
-  def __init__(self,name,nf_calories=None,nf_total_fat=None,nf_saturated_fat=None,nf_cholesterol=None,nf_sodium=None,nf_total_carbohydrate=None,nf_dietary_fiber=None,nf_sugars=None,nf_protein=None, serving_qty=None, serving_unit=None):
+  def __init__(self,name,img_url,nf_calories=None,nf_total_fat=None,nf_saturated_fat=None,nf_cholesterol=None,nf_sodium=None,nf_total_carbohydrate=None,nf_dietary_fiber=None,nf_sugars=None,nf_protein=None, serving_qty=None, serving_unit=None):
   
     self.name = name
+    self.img_url = img_url
     self.nf_calories = Decimal(nf_calories)
     self.nf_total_fat = Decimal(nf_total_fat)
     self.nf_saturated_fat = Decimal(nf_saturated_fat)
