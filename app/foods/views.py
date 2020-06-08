@@ -173,6 +173,20 @@ def add_food():
     return redirect(url_for('carts.list'))
   
   return render_template('foods/add_food.html',form=form)
+
+@foods.route('/delete/<int:id>')
+@login_required
+def delete_food(id):
+  food = FoodItem.query.get_or_404(id)
+  cart = food.cart
+
+  # delete food and update cart
+  db.session.delete(food)
+  cart.update_nutrients()
+  db.session.commit()
+
+  return redirect(url_for('carts.cart',id=cart.id))
+  
 ######################################
 # HELPER FUNCTIONS
 

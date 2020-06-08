@@ -23,7 +23,8 @@
             <p class="card-text">Sugars: {{food.nf_sugars | round(2)}} {{nutrient_categories_units.nf_sugars}}</p>
             <p class="card-text">Protein: {{food.nf_protein | round(2)}} {{nutrient_categories_units.nf_protein}}</p>
             <p class="card-text">Serving Quantity: {{food.serving_qty | round(2)}}</p>
-            <p class="card-text">Serving Unit: {{food.serving_unit}}</p>            
+            <p class="card-text">Serving Unit: {{food.serving_unit}}</p>
+            <a href="{{url_for('foods.delete_food',id=food.id)}}" class="btn btn-danger">Delete</a>            
           </div>
         </div>             
       </div>
