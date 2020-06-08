@@ -86,6 +86,7 @@ class FoodItemModelTestCase(FlaskTestCase):
     serving_unit='serving'
 
     food1 = FoodItem(name=name,
+    img_url="",
     nf_calories=nf_calories,
     nf_total_fat=nf_total_fat,
     nf_cholesterol=nf_cholesterol,
@@ -139,6 +140,7 @@ class CartModelTestCase(FlaskTestCase):
   
   def test_update_nutrients(self):
     food1 = FoodItem(name='food1',
+    img_url="",
     nf_calories=Decimal(1),
     nf_total_fat=Decimal(2),
     nf_cholesterol=Decimal(3),
@@ -150,6 +152,7 @@ class CartModelTestCase(FlaskTestCase):
     nf_protein=Decimal(9))
 
     food2 = FoodItem(name='food2',
+    img_url="",
     nf_calories=Decimal(11),
     nf_total_fat=Decimal(12),
     nf_cholesterol=Decimal(13),
@@ -177,6 +180,7 @@ class CartModelTestCase(FlaskTestCase):
   
   def test_relationships(self):
     food1 = FoodItem(name='food1',
+    img_url="",
     nf_calories=Decimal(1),
     nf_total_fat=Decimal(2),
     nf_cholesterol=Decimal(3),
@@ -188,6 +192,7 @@ class CartModelTestCase(FlaskTestCase):
     nf_protein=Decimal(9))
 
     food2 = FoodItem(name='food2',
+    img_url="",
     nf_calories=Decimal(11),
     nf_total_fat=Decimal(12),
     nf_cholesterol=Decimal(13),
