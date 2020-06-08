@@ -19,7 +19,8 @@ def list():
 @login_required
 def cart(id):
   cart = Cart.query.get_or_404(id)
-  return render_template('carts/cart.html', cart=cart)
+  foods = cart.foods.all()
+  return render_template('carts/cart.html', cart=cart,foods=foods,nutrient_categories_units=nutrient_categories_units)
 
 @carts.route('/add_cart')
 @login_required
