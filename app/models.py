@@ -70,7 +70,7 @@ class Cart(db.Model):
   __tablename__ = 'carts'
 
   id = db.Column(db.Integer, primary_key=True)
-  foods = db.relationship('FoodItem', backref='cart', cascade="all, delete-orphan")
+  foods = db.relationship('FoodItem', backref='cart', lazy='dynamic',cascade="all, delete-orphan")
   user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
   nf_calories = db.Column(db.Numeric(asdecimal=True,decimal_return_scale=2))
