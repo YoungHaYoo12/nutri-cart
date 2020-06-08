@@ -571,3 +571,79 @@ class FlaskCartsTestCase(unittest.TestCase):
       self.assertTrue('Dietary Fiber: 24.00 g' in data1)
       self.assertTrue('Sugars: 26.00 g' in data1)
       self.assertTrue('Protein: 28.00 g' in data1)
+
+  def test_carts_delete(self):
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'one@one.com', 
+        'username':'one',
+        'password': 'one' 
+      }
+      )
+
+      self.client.get(url_for('carts.delete',id=5))
+      self.client.get(url_for('carts.delete',id=4))
+
+      # test that carts were deleted
+      self.assertTrue(len(current_user.carts.all()) == 3)
+
+      # test that aborting works when cart with given id does not exist
+      response3 = self.client.get(url_for('carts.delete',id=100))
+      self.assertTrue(response3.status_code == 404)
+  
+  def test_carts_add(self):
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'one@one.com', 
+        'username':'one',
+        'password': 'one' 
+      }
+      )
+
+      self.client.get(url_for('carts.add'))
+      self.assertTrue(len(current_user.carts.all()) == 6)
+  
+  def test_cards_cart(self):
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'one@one.com', 
+        'username':'one',
+        'password': 'one' 
+      }
+      )
+
+      response1 = self.client.get(url_for('carts.cart', id=1))
+      data1 = response1.get_data(as_text=True)
+
+      self.assertTrue('food1' in data1)
+      self.assertTrue('Calories: 1.00 kcal' in data1)
+      self.assertTrue('Total Fat: 2.00 g' in data1)
+      self.assertTrue('Saturated Fat: 4.00 g' in data1)
+      self.assertTrue('Cholesterol: 3.00 mg' in data1)
+      self.assertTrue('Sodium: 5.00 mg' in data1)
+      self.assertTrue('Total Carbohydrate: 6.00 g' in data1)
+      self.assertTrue('Dietary Fiber: 7.00 g' in data1)
+      self.assertTrue('Sugars: 8.00 g' in data1)
+      self.assertTrue('Protein: 9.00 g' in data1)
+      self.assertTrue('Serving Quantity: 1.00' in data1)
+      self.assertTrue('Serving Unit: Serving' in data1)
+
+      self.assertTrue('food2' in data1)
+      self.assertTrue('Calories: 11.00 kcal' in data1)
+      self.assertTrue('Total Fat: 12.00 g' in data1)
+      self.assertTrue('Saturated Fat: 14.00 g' in data1)
+      self.assertTrue('Cholesterol: 13.00 mg' in data1)
+      self.assertTrue('Sodium: 15.00 mg' in data1)
+      self.assertTrue('Total Carbohydrate: 16.00 g' in data1)
+      self.assertTrue('Dietary Fiber: 17.00 g' in data1)
+      self.assertTrue('Sugars: 18.00 g' in data1)
+      self.assertTrue('Protein: 19.00 g' in data1)
+      self.assertTrue('Serving Quantity: 1.00' in data1)
+      self.assertTrue('Serving Unit: Serving' in data1)
+
+      # test that aborting works when cart with given id does not exist 
+      response2 = self.client.get(url_for('carts.cart', id=100))
+      self.assertTrue(response2.status_code == 404)
