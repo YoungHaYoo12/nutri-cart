@@ -147,6 +147,7 @@ def add_food():
     # create food and add to cart
     food_info = session.get('food_info')
     food = FoodItem(name=food_info['food_name'],
+    img_url=food_info['photo']['thumb'],
     nf_calories=food_info['nf_calories'],
     nf_total_fat=food_info['nf_total_fat'],
     nf_saturated_fat=food_info['nf_saturated_fat'],
