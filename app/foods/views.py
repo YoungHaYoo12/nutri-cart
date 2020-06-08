@@ -77,7 +77,7 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
 
   return render_template('foods/food.html',food_info=food_info,form=form,add_form=add_form,nutrient_categories_units=nutrient_categories_units)
 
-# Detail Page For Common Food
+# Detail Page For Branded Food
 @foods.route('/branded/<nix_item_id>', methods=['GET','POST'])
 @foods.route('/branded/<nix_item_id>/<serving_unit>/<serving_qty>',methods=['GET','POST'])
 def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
