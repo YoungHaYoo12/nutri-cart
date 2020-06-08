@@ -66,7 +66,8 @@ def common_food(food_name, serving_unit=None, serving_qty=None):
     return redirect(url_for('foods.common_food',food_name=food_name,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
   elif add_form.validate_on_submit() and add_form.add.data:
     session['food_info'] = food_info
-    session['serving_unit'] = serving_unit
+    # get string representation of serving_unit
+    session['serving_unit'] = get_str_serving_unit(measures_tuple,str(round(serving_unit,2)))
     session['serving_qty'] = serving_qty
     return redirect(url_for('foods.add_food'))
   elif request.method == 'GET':
@@ -119,7 +120,8 @@ def branded_food(nix_item_id, serving_unit=None, serving_qty=None):
     return redirect(url_for('foods.branded_food',nix_item_id=nix_item_id,serving_unit=form.serving_unit.data,serving_qty=form.serving_qty.data))
   elif add_form.validate_on_submit() and add_form.add.data:
     session['food_info'] = food_info
-    session['serving_unit'] = serving_unit
+    # get string representation of serving_unit
+    session['serving_unit'] = get_str_serving_unit(measures_tuple,str(round(serving_unit,2)))
     session['serving_qty'] = serving_qty
     return redirect(url_for('foods.add_food'))
   elif request.method == 'GET':
