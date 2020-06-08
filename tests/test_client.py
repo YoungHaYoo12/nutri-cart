@@ -1,9 +1,11 @@
 import unittest
 from decimal import Decimal
 from flask import url_for
+from flask_login import login_user, current_user
 from app import create_app, db
 from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data,round_food_data,is_in_tuple_list,get_str_serving_unit
-from app.models import User
+from app.carts.views import list, add, delete, cart
+from app.models import User, Cart, FoodItem
 from nutritionix import nutrient_categories
 
 class FlaskClientTestCase(unittest.TestCase):
@@ -471,3 +473,101 @@ class FlaskAuthTestCase(FlaskClientTestCase):
     response10 = self.client.get(url_for('auth.logout'),follow_redirects=True)
     self.assertEqual(response10.status_code,200)
     self.assertTrue('You Have Been Logged Out' in response10.get_data(as_text=True))
+
+# test class for 'carts' blueprint
+class FlaskCartsTestCase(unittest.TestCase):
+  def setUp(self):
+    self.app = create_app('testing')
+    self.app_context = self.app.app_context()
+    self.app_context.push()
+    db.create_all()
+    self.client = self.app.test_client(use_cookies=True)
+
+    user = User(email="one@one.com",username="one",password="one")
+
+    # Add carts to user
+    cart1 = Cart()
+    cart2 = Cart()
+    cart3 = Cart()
+    cart4 = Cart()
+    cart5 = Cart()
+    cart1.user = user
+    cart2.user = user
+    cart3.user = user
+    cart4.user = user
+    cart5.user = user   
+
+    # Add foods to cart1 and cart2
+    food1 = FoodItem(name='food1',
+    img_url="",
+    nf_calories=Decimal(1),
+    nf_total_fat=Decimal(2),
+    nf_cholesterol=Decimal(3),
+    nf_saturated_fat=Decimal(4),
+    nf_sodium=Decimal(5),
+    nf_total_carbohydrate=Decimal(6),
+    nf_dietary_fiber=Decimal(7),
+    nf_sugars=Decimal(8),
+    nf_protein=Decimal(9),
+    serving_qty=Decimal(1),
+    serving_unit="Serving")
+    
+    food2 = FoodItem(name='food2',
+    img_url="",
+    nf_calories=Decimal(11),
+    nf_total_fat=Decimal(12),
+    nf_cholesterol=Decimal(13),
+    nf_saturated_fat=Decimal(14),
+    nf_sodium=Decimal(15),
+    nf_total_carbohydrate=Decimal(16),
+    nf_dietary_fiber=Decimal(17),
+    nf_sugars=Decimal(18),
+    nf_protein=Decimal(19),
+    serving_qty=Decimal(1),
+    serving_unit="Serving")
+
+    food1.cart = cart1
+    food2.cart = cart1
+    cart1.update_nutrients()
+    cart2.update_nutrients()
+
+    db.session.add_all([user,cart1,cart2,cart3,cart4,cart5,food1,food2]) 
+    db.session.commit()
+  
+  def tearDown(self):
+    db.session.remove()
+    db.drop_all()
+    self.app_context.pop()
+
+  def test_carts_list(self):
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'one@one.com', 
+        'username':'one',
+        'password': 'one' 
+      }
+      )
+
+      response1 = self.client.get(url_for('carts.list'))
+      data1 = response1.get_data(as_text=True)
+      
+      # test that user's carts are shown
+      self.assertTrue("Cart 1" in data1)
+      self.assertTrue("Cart 2" in data1)
+      self.assertTrue("Cart 3" in data1)
+      self.assertTrue("Cart 4" in data1)
+
+      # test that only 4 carts are on a page (pagination)
+      self.assertFalse("Cart 5" in data1)
+
+      # test that updated cart nutrients are displayed (from added food)
+      self.assertTrue('Calories: 12.00 kcal' in data1)
+      self.assertTrue('Total Fat: 14.00 g' in data1)
+      self.assertTrue('Saturated Fat: 18.00 g' in data1)
+      self.assertTrue('Cholesterol: 16.00 mg' in data1)
+      self.assertTrue('Sodium: 20.00 mg' in data1)
+      self.assertTrue('Total Carbohydrate: 22.00 g' in data1)
+      self.assertTrue('Dietary Fiber: 24.00 g' in data1)
+      self.assertTrue('Sugars: 26.00 g' in data1)
+      self.assertTrue('Protein: 28.00 g' in data1)
