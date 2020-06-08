@@ -2,7 +2,7 @@ import unittest
 from decimal import Decimal
 from flask import url_for
 from app import create_app, db
-from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data,round_food_data,is_in_tuple_list
+from app.foods.views import get_measures_tuple, get_nutrient_multiplier,update_nutrients,clean_food_data,round_food_data,is_in_tuple_list,get_str_serving_unit
 from app.models import User
 from nutritionix import nutrient_categories
 
@@ -193,6 +193,13 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(is_in_tuple_list('2.22',tuple_list))
     self.assertTrue(is_in_tuple_list('3.33',tuple_list))
     self.assertFalse(is_in_tuple_list('1.22',tuple_list))
+
+    # get_str_serving_unit
+    tuple1 = ('42.0','serving1')
+    tuple2 = ('21.00','serving2')
+    measures_tuple = [tuple1, tuple2]
+    self.assertTrue(get_str_serving_unit(measures_tuple,'42.0') == 'serving1')
+    self.assertTrue(get_str_serving_unit(measures_tuple,'21.00') == 'serving2')
 
   def test_foods_common_food(self):
     # Check 404 exception for when food is not in nutritionix database
