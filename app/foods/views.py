@@ -163,6 +163,10 @@ def add_food():
     serving_qty=session.get('serving_qty')
     )
     food.cart = cart
+
+    # update cart nutrients too
+    cart.update_nutrients()
+
     db.session.add(food)
     db.session.commit()
     
