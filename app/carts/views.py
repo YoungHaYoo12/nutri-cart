@@ -5,8 +5,8 @@ from flask_login import current_user,login_required
 from flask import render_template, redirect, url_for, request
 from nutritionix import nutrient_categories_units
 
-@carts.route('/list/carts')
-@carts.route('/list/carts/sort_by/<nutrient>')
+@carts.route('/list')
+@carts.route('/list/sort_by/<nutrient>')
 @login_required
 def list(nutrient=None):
   page = request.args.get('page',1,type=int)
