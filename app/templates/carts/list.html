@@ -12,15 +12,36 @@
           Sort By
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="#">Calories</a>
-          <a class="dropdown-item" href="#">Total Fat</a>
-          <a class="dropdown-item" href="#">Saturated Fat</a>
-          <a class="dropdown-item" href="#">Cholesterol</a>
-          <a class="dropdown-item" href="#">Sodium</a>
-          <a class="dropdown-item" href="#">Total Carbohydrate</a>
-          <a class="dropdown-item" href="#">Dietary Fiber</a>
-          <a class="dropdown-item" href="#">Sugars</a>
-          <a class="dropdown-item" href="#">Protein</a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_calories') }}">
+            Calories
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_total_fat') }}">
+            Total Fat
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_saturated_fat') }}">
+            Saturated Fat
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_cholesterol') }}">
+            Cholesterol
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_sodium') }}">
+            Sodium
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_total_carbohydrate') }}">
+            Total Carbohydrate
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_dietary_fiber') }}">
+            Dietary Fiber
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_sugars') }}">
+            Sugars
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_protein') }}">
+            Protein
+          </a>
+          <a class="dropdown-item" href="{{ url_for('carts.list') }}">
+            None
+          </a>
         </div>
       </div>
     </div>
@@ -77,7 +98,7 @@
 
     {% if pagination %}
     <div class="pagination">
-        {{ macros.pagination_widget(pagination, 'carts.list') }}
+        {{ macros.pagination_widget(pagination, 'carts.list',nutrient=nutrient) }}
     </div>
     {% endif %}
   </div>
