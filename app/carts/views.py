@@ -6,10 +6,29 @@ from flask import render_template, redirect, url_for, request
 from nutritionix import nutrient_categories_units
 
 @carts.route('/list/carts')
+@carts.route('/list/carts/sort_by/<nutrient>')
 @login_required
-def list():
+def list(nutrient=None):
   page = request.args.get('page',1,type=int)
-  pagination = current_user.carts.order_by(Cart.id.asc()).paginate(page,per_page=4)
+
+  # Order Carts (If sorting argument provided)
+  if nutrient is None:
+    query = current_user.carts.order_by(Cart.id.asc())
+  else:
+    sort_options = {
+      'nf_calories' : Cart.nf_calories,
+      'nf_total_fat' : Cart.nf_total_fat,
+      'nf_saturated_fat' : Cart.nf_saturated_fat,
+      'nf_cholesterol' : Cart.nf_cholesterol,
+      'nf_sodium' : Cart.nf_sodium,
+      'nf_total_carbohydrate' : Cart.nf_total_carbohydrate,
+      'nf_dietary_fiber' : Cart.nf_dietary_fiber,
+      'nf_sugars' : Cart.nf_sugars,
+      'nf_protein' : Cart.nf_protein
+    } 
+    query = current_user.carts.order_by(sort_options[nutrient].asc())
+  pagination = query.paginate(page,per_page=4)
+
   carts = pagination.items
   prev_cart_num = (page-1)*4
   cart_counter = [prev_cart_num+1,prev_cart_num+2,prev_cart_num+3,prev_cart_num+4]
