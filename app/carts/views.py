@@ -26,7 +26,7 @@ def list(nutrient=None):
       'nf_sugars' : Cart.nf_sugars,
       'nf_protein' : Cart.nf_protein
     } 
-    query = current_user.carts.order_by(sort_options[nutrient].asc())
+    query = current_user.carts.order_by(sort_options[nutrient].desc())
   pagination = query.paginate(page,per_page=4)
 
   carts = pagination.items
