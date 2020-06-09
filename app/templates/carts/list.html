@@ -3,7 +3,7 @@
 {% block content %}
 <div class="carts-list-wrapper">
   <div class="row">
-    <h1 class="header col-12">Carts for @{{current_user.username}}</h1>
+    <h1 class="header col-12">Carts for @{{user.username}}</h1>
     <div class="col-12">
       <a class="btn btn-primary add-button" href="{{url_for('carts.add')}}">Add Cart</a>
   <!-- Example single danger button -->
@@ -12,34 +12,34 @@
           Sort By
         </button>
         <div class="dropdown-menu">
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_calories',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_calories',username=user.username) }}">
             Calories
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_total_fat',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_total_fat',username=user.username) }}">
             Total Fat
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_saturated_fat',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_saturated_fat',username=user.username) }}">
             Saturated Fat
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_cholesterol',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_cholesterol',username=user.username) }}">
             Cholesterol
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_sodium',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_sodium',username=user.username) }}">
             Sodium
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_total_carbohydrate',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_total_carbohydrate',username=user.username) }}">
             Total Carbohydrate
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_dietary_fiber',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_dietary_fiber',username=user.username) }}">
             Dietary Fiber
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_sugars',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_sugars',username=user.username) }}">
             Sugars
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_protein',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',nutrient='nf_protein',username=user.username) }}">
             Protein
           </a>
-          <a class="dropdown-item" href="{{ url_for('carts.list',username=current_user.username) }}">
+          <a class="dropdown-item" href="{{ url_for('carts.list',username=user.username) }}">
             None
           </a>
         </div>
@@ -99,9 +99,9 @@
     {% if pagination %}
     <div class="pagination">
       {% if nutrient == None %}
-        {{ macros.pagination_widget(pagination, 'carts.list',username=current_user.username) }}
+        {{ macros.pagination_widget(pagination, 'carts.list',username=user.username) }}
       {% else %}
-        {{ macros.pagination_widget(pagination, 'carts.list',username=current_user.username,nutrient=nutrient) }}
+        {{ macros.pagination_widget(pagination, 'carts.list',username=user.username,nutrient=nutrient) }}
       {% endif %}
     </div>
     {% endif %}
