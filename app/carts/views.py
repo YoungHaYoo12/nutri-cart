@@ -54,7 +54,7 @@ def add():
   cart.user = current_user
   db.session.add(cart)
   db.session.commit()
-  return redirect(url_for('carts.list'))
+  return redirect(url_for('carts.list',username=current_user.username))
 
 @carts.route('/delete/<int:id>')
 @login_required
@@ -62,4 +62,4 @@ def delete(id):
   cart = Cart.query.get_or_404(id)
   db.session.delete(cart)
   db.session.commit()
-  return redirect(url_for('carts.list'))
+  return redirect(url_for('carts.list',username=current_user.username))

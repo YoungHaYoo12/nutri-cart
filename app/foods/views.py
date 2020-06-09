@@ -170,7 +170,7 @@ def add_food():
     db.session.add(food)
     db.session.commit()
     
-    return redirect(url_for('carts.list'))
+    return redirect(url_for('carts.list',username=current_user.username))
   
   return render_template('foods/add_food.html',form=form)
 
