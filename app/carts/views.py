@@ -32,7 +32,8 @@ def list(nutrient=None):
   carts = pagination.items
   prev_cart_num = (page-1)*4
   cart_counter = [prev_cart_num+1,prev_cart_num+2,prev_cart_num+3,prev_cart_num+4]
-  return render_template('carts/list.html',carts=carts,pagination=pagination,cart_counter=cart_counter,nutrient_categories_units=nutrient_categories_units)
+  return render_template('carts/list.html',carts=carts,pagination=pagination,cart_counter=cart_counter,nutrient_categories_units=nutrient_categories_units,
+  nutrient=nutrient)
 
 @carts.route('/cart/<int:id>')
 @login_required

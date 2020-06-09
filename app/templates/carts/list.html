@@ -98,7 +98,11 @@
 
     {% if pagination %}
     <div class="pagination">
+      {% if nutrient == None %}
+        {{ macros.pagination_widget(pagination, 'carts.list') }}
+      {% else %}
         {{ macros.pagination_widget(pagination, 'carts.list',nutrient=nutrient) }}
+      {% endif %}
     </div>
     {% endif %}
   </div>
