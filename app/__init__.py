@@ -26,9 +26,9 @@ def create_app(config_name):
   from app.carts import carts as carts_blueprint
   
   app.register_blueprint(core_blueprint)
-  app.register_blueprint(foods_blueprint)
+  app.register_blueprint(foods_blueprint,url_prefix='/foods')
   app.register_blueprint(errors_blueprint)
   app.register_blueprint(auth_blueprint,url_prefix='/auth')
-  app.register_blueprint(carts_blueprint)
+  app.register_blueprint(carts_blueprint,url_prefix='/carts')
 
   return app
