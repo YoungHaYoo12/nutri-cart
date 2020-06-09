@@ -1,19 +1,24 @@
 from app import db
 from app.carts import carts
-from app.models import Cart
+from app.models import Cart, User
 from flask_login import current_user,login_required
-from flask import render_template, redirect, url_for, request
+from flask import render_template, redirect, url_for, request, abort
 from nutritionix import nutrient_categories_units
 
-@carts.route('/list')
-@carts.route('/list/sort_by/<nutrient>')
+@carts.route('/list/<username>')
+@carts.route('/list/<username>/sort_by/<nutrient>')
 @login_required
-def list(nutrient=None):
+def list(username,nutrient=None):
   page = request.args.get('page',1,type=int)
+
+  # retrive user
+  user = User.query.filter_by(username=username).first()
+  if user is None:
+    abort(404)
 
   # Order Carts (If sorting argument provided)
   if nutrient is None:
-    query = current_user.carts.order_by(Cart.id.asc())
+    query = user.carts.order_by(Cart.id.asc())
   else:
     sort_options = {
       'nf_calories' : Cart.nf_calories,
@@ -26,7 +31,7 @@ def list(nutrient=None):
       'nf_sugars' : Cart.nf_sugars,
       'nf_protein' : Cart.nf_protein
     } 
-    query = current_user.carts.order_by(sort_options[nutrient].desc())
+    query = user.carts.order_by(sort_options[nutrient].desc())
   pagination = query.paginate(page,per_page=4)
 
   carts = pagination.items
