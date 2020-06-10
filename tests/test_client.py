@@ -321,8 +321,6 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
       'serving_qty':Decimal(777),
       'submit':True
     }))    
-    print(resp4a.get_data(as_text=True))
-    print(resp4b.get_data(as_text=True))
     self.assertTrue(resp4a.status_code==200)
     self.assertTrue(resp4b.status_code==200)
 
