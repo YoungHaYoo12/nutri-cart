@@ -38,22 +38,7 @@ nav .navbar-nav li a{
   flex:1;
 }
 
-
-/* ---------- core/index.html ---------- */
-.index-page-wrapper {
-  height:100%;
-  width:100%;
-
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.index-page-wrapper .search-box {
-  width:50%;
-  position:relative;
-}
-
+/* ---------- _macros.html ---------- */
 .search-box input[type="text"]{
   padding:10px;
   box-sizing: border-box;
@@ -83,6 +68,21 @@ nav .navbar-nav li a{
 .search-box form {
   display:flex;
   justify-content:space-between;
+}
+
+/* ---------- core/index.html ---------- */
+.index-page-wrapper {
+  height:100%;
+  width:100%;
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.index-page-wrapper .search-box {
+  width:50%;
+  position:relative;
 }
 
 /* ---------- foods/list.html ---------- */
