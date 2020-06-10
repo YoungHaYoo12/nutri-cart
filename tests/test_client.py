@@ -289,9 +289,6 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
       response2 = self.client.get(url_for('foods.delete_food',id=2))
       self.assertTrue(response2.status_code == 403)
 
-
-
-
   def test_foods_common_food(self):
     # Check 404 exception for when food is not in nutritionix database
     resp1a = self.client.get(url_for('foods.common_food',food_name='app'))
@@ -456,7 +453,6 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     # Check 404 response when serving_unit url parameter is not valid to SelectField options
     resp8 = self.client.get(url_for('foods.branded_food',nix_item_id=big_mac_id,serving_unit=1.00,serving_qty=1.00))
     self.assertTrue(resp8.status_code==404)
-
 
 # test class for 'auth' blueprint
 class FlaskAuthTestCase(FlaskClientTestCase):
@@ -692,7 +688,6 @@ class FlaskCartsTestCase(unittest.TestCase):
       # test 404 error when username is incorrect
       response3 = self.client.get(url_for('carts.list',username='eight'))
       self.assertTrue(response3.status_code == 404)
-      
 
   def test_carts_delete(self):
     with self.client:
