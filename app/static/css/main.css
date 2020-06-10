@@ -49,10 +49,9 @@ nav .navbar-nav li a{
   align-items:center;
 }
 
-.search-box {
+.index-page-wrapper .search-box {
   width:50%;
   position:relative;
-
 }
 
 .search-box input[type="text"]{
