@@ -7,7 +7,6 @@ from nutritionix import nutrient_categories_units
 
 @carts.route('/list/<username>')
 @carts.route('/list/<username>/sort_by/<nutrient>')
-@login_required
 def list(username,nutrient=None):
   page = request.args.get('page',1,type=int)
 
@@ -41,7 +40,6 @@ def list(username,nutrient=None):
   nutrient=nutrient,user=user)
 
 @carts.route('/cart/<int:id>')
-@login_required
 def cart(id):
   cart = Cart.query.get_or_404(id)
   foods = cart.foods.all()
@@ -60,6 +58,11 @@ def add():
 @login_required
 def delete(id):
   cart = Cart.query.get_or_404(id)
+
+  # abort if cart does not belong to current_user
+  if cart.user != current_user:
+    abort(403)
+
   db.session.delete(cart)
   db.session.commit()
   return redirect(url_for('carts.list',username=current_user.username))
