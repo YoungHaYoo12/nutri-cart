@@ -228,6 +228,70 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     self.assertTrue(get_str_serving_unit(measures_tuple,'42.0') == 'serving1')
     self.assertTrue(get_str_serving_unit(measures_tuple,'21.00') == 'serving2')
 
+  def test_foods_delete_food(self):
+    user = User(email='one@one.com',username='one',password='one')
+    user2 = User(email='two@two.com',username='two',password='two')
+    cart = Cart()
+    cart2 = Cart()
+    food1 = FoodItem(name='food1',
+    img_url="",
+    nf_calories=Decimal(1),
+    nf_total_fat=Decimal(2),
+    nf_cholesterol=Decimal(3),
+    nf_saturated_fat=Decimal(4),
+    nf_sodium=Decimal(5),
+    nf_total_carbohydrate=Decimal(6),
+    nf_dietary_fiber=Decimal(7),
+    nf_sugars=Decimal(8),
+    nf_protein=Decimal(9),
+    serving_qty=Decimal(1),
+    serving_unit="Serving")
+
+    food2 = FoodItem(name='food2',
+    img_url="",
+    nf_calories=Decimal(1),
+    nf_total_fat=Decimal(2),
+    nf_cholesterol=Decimal(3),
+    nf_saturated_fat=Decimal(4),
+    nf_sodium=Decimal(5),
+    nf_total_carbohydrate=Decimal(6),
+    nf_dietary_fiber=Decimal(7),
+    nf_sugars=Decimal(8),
+    nf_protein=Decimal(9),
+    serving_qty=Decimal(1),
+    serving_unit="Serving")
+    food1.cart = cart
+    food2.cart = cart2
+    cart.user = user
+    cart2.user = user2
+    db.session.add_all([user,user2,cart,cart2,food1,food2])
+    db.session.commit()
+
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'one@one.com', 
+        'username':'one',
+        'password': 'one' 
+      }
+      )
+
+      # delete food
+      self.client.get(url_for('foods.delete_food',id=1))
+      cart = current_user.carts.first()
+      self.assertTrue(len(cart.foods.all()) == 0)
+
+      # 404 error if food does not exist
+      response1 = self.client.get(url_for('foods.delete_food',id=100))
+      self.assertTrue(response1.status_code == 404)
+
+      # 403 error if food does not belong to user  
+      response2 = self.client.get(url_for('foods.delete_food',id=2))
+      self.assertTrue(response2.status_code == 403)
+
+
+
+
   def test_foods_common_food(self):
     # Check 404 exception for when food is not in nutritionix database
     resp1a = self.client.get(url_for('foods.common_food',food_name='app'))
@@ -249,12 +313,16 @@ class FlaskFoodsTestCase(FlaskClientTestCase):
     # When Form Validates On Submit check redirect
     resp4a = self.client.post(url_for('foods.common_food',food_name='eggs',data = {
       'serving_unit':'50.00',
-      'serving_qty':777.00
+      'serving_qty':777.00,
+      'submit':True
     }),follow_redirects=True)
     resp4b = self.client.post(url_for('foods.common_food',food_name='eggs',data = {
       'serving_unit':'50.00',
-      'serving_qty':Decimal(777)
+      'serving_qty':Decimal(777),
+      'submit':True
     }))    
+    print(resp4a.get_data(as_text=True))
+    print(resp4b.get_data(as_text=True))
     self.assertTrue(resp4a.status_code==200)
     self.assertTrue(resp4b.status_code==200)
 
