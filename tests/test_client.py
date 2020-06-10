@@ -669,6 +669,33 @@ class FlaskCartsTestCase(unittest.TestCase):
       self.assertTrue('Sugars: 26.00 g' in data1)
       self.assertTrue('Protein: 28.00 g' in data1)
 
+      # test that sorting works (use calories for sorting)
+      cart1 = current_user.carts.filter_by(id=1).first()
+      cart2 = current_user.carts.filter_by(id=2).first()
+      cart3 = current_user.carts.filter_by(id=3).first()
+      cart4 = current_user.carts.filter_by(id=4).first()
+      cart5 = current_user.carts.filter_by(id=5).first()
+
+      cart1.nf_calories = 1
+      cart3.nf_calories = 2
+      cart4.nf_calories = 3
+      cart5.nf_calories = 4
+
+      # By sorting by calories, cart2 should be excluded from page 1
+      # nf_dietary_fiber value of 1000 helps distinguish cart2 from other carts
+      cart2.nf_calories = 0
+      cart2.nf_dietary_fiber = 1000
+      db.session.commit()
+
+      response2 = self.client.get(url_for('carts.list',username='one',nutrient='nf_calories'))
+      data2 = response1.get_data(as_text=True)
+      self.assertFalse('Dietary Fiber: 1000.00 g' in data2)
+
+      # test 404 error when username is incorrect
+      response3 = self.client.get(url_for('carts.list',username='eight'))
+      self.assertTrue(response3.status_code == 404)
+      
+
   def test_carts_delete(self):
     with self.client:
       self.client.post(url_for('auth.login'), data=
