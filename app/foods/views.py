@@ -179,6 +179,11 @@ def add_food():
 def delete_food(id):
   food = FoodItem.query.get_or_404(id)
   cart = food.cart
+  user = cart.user
+
+  # abort if food does not belong to current user
+  if current_user != user:
+    abort(403)
 
   # delete food and update cart
   db.session.delete(food)
