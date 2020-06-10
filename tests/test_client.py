@@ -726,7 +726,7 @@ class FlaskCartsTestCase(unittest.TestCase):
       self.client.get(url_for('carts.add'))
       self.assertTrue(len(current_user.carts.all()) == 6)
   
-  def test_cards_cart(self):
+  def test_carts_cart(self):
     with self.client:
       self.client.post(url_for('auth.login'), data=
       { 
