@@ -42,8 +42,9 @@ def list(username,nutrient=None):
 @carts.route('/cart/<int:id>')
 def cart(id):
   cart = Cart.query.get_or_404(id)
+  user = cart.user
   foods = cart.foods.all()
-  return render_template('carts/cart.html', cart=cart,foods=foods,nutrient_categories_units=nutrient_categories_units)
+  return render_template('carts/cart.html', cart=cart,foods=foods,user=user,nutrient_categories_units=nutrient_categories_units)
 
 @carts.route('/add_cart')
 @login_required

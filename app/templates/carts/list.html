@@ -85,7 +85,9 @@
                   Protein: {{cart.nf_protein|round(2)}} {{nutrient_categories_units.nf_protein}}           
                 </p>
                 <a class="btn btn-info" href="{{url_for('carts.cart',id=cart.id)}}">View</a>
+                {% if current_user == user %}
                 <a class="btn btn-danger" href="{{url_for('carts.delete',id=cart.id)}}">Delete</a>
+                {% endif %}
               </div>
               {% endwith %}
             </div>
