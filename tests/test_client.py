@@ -530,7 +530,11 @@ class FlaskCartsTestCase(unittest.TestCase):
     cart1.update_nutrients()
     cart2.update_nutrients()
 
-    db.session.add_all([user,cart1,cart2,cart3,cart4,cart5,food1,food2]) 
+    user2 = User(email='two@two.com',username='two',password='two')
+    cart6 = Cart()
+    cart6.user = user2
+
+    db.session.add_all([user,user2,cart1,cart2,cart3,cart4,cart5,cart6,food1,food2]) 
     db.session.commit()
   
   def tearDown(self):
@@ -548,7 +552,7 @@ class FlaskCartsTestCase(unittest.TestCase):
       }
       )
 
-      response1 = self.client.get(url_for('carts.list'))
+      response1 = self.client.get(url_for('carts.list',username='one'))
       data1 = response1.get_data(as_text=True)
       
       # test that user's carts are shown
@@ -590,6 +594,12 @@ class FlaskCartsTestCase(unittest.TestCase):
       # test that aborting works when cart with given id does not exist
       response3 = self.client.get(url_for('carts.delete',id=100))
       self.assertTrue(response3.status_code == 404)
+
+      # test that aborting works when cart does not belong to current user
+      response4 = self.client.get(url_for('carts.delete',id=6))
+      print(response4.get_data(as_text=True))
+      print(response4.status_code)
+      self.assertTrue(response4.status_code == 403)
   
   def test_carts_add(self):
     with self.client:
