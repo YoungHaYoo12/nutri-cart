@@ -623,8 +623,6 @@ class FlaskCartsTestCase(unittest.TestCase):
 
       # test that aborting works when cart does not belong to current user
       response4 = self.client.get(url_for('carts.delete',id=6))
-      print(response4.get_data(as_text=True))
-      print(response4.status_code)
       self.assertTrue(response4.status_code == 403)
   
   def test_carts_add(self):
