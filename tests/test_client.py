@@ -34,6 +34,32 @@ class FlaskCoreTestCase(FlaskClientTestCase):
       'query':''
     })
     self.assertFalse(response2.status_code==302)
+  
+  def test_core_users_page(self):
+    # Form Validated
+    response1 = self.client.post(url_for('core.users'),data= {
+      'query': 'one'
+    })
+    self.assertTrue(response1.status_code == 302)
+
+    # Form Not Validated
+    response2 = self.client.post(url_for('core.users'),data= {
+      'query':''
+    })
+    self.assertFalse(response2.status_code==302)
+
+    # When queried user exists
+    user = User(email='one@one.com',username='one',password='one')
+    db.session.add(user)
+    db.session.commit()
+    response3 = self.client.get(url_for('core.users',username='one'))
+    data3 = response3.get_data(as_text=True)
+    self.assertTrue('one' in data3)
+    
+    # When queried user does not exist
+    response4 = self.client.get(url_for('core.users',username='two'))
+    data4 = response4.get_data(as_text=True)
+    self.assertTrue('No Results Returned.' in data4)
 
 # test class for 'foods' blueprint  
 class FlaskFoodsTestCase(FlaskClientTestCase):
