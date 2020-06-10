@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% import "_macros.html" as macros  %}
+
+{% block content %}
+<div class="core-users-wrapper">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        {{macros.searchbox(form,"What User Would You Like To Search For?")}}
+        <hr class="my-4">
+      </div>
+      <div class="col-12 text-center">
+        <h1>Search Result For <span class="query">{{query}}</span></h1>
+        {% if user == None %}
+          <p class="text-muted">No Results Returned.</p>
+        {% else %}
+          <div class="jumbotron">
+            <div class="row">
+              <div class="col-12">
+                <svg class="bi bi-person-fill" width="20em" height="20em" viewBox="0 0 16 16" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                  <path fill-rule="evenodd" d="M3 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H3zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                </svg>
+              </div>
+              <div class="col-12">
+                <h2>@{{user.username}}</h2>
+                <a class="btn btn-secondary btn-lg">View Carts</a>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      </div>             
+    </div>
+  </div>
+</div>
+{% endblock %}

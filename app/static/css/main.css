@@ -85,6 +85,19 @@ nav .navbar-nav li a{
   position:relative;
 }
 
+/* ---------- core/users.html ---------- */
+.core-users-wrapper h1 {
+  color:white;
+}
+
+.core-users-wrapper hr {
+  border-color:#b2b2b2;
+}
+
+.core-users-wrapper .query {
+  color:#3484F0;
+}
+
 /* ---------- foods/list.html ---------- */
 .foods-list-wrapper {
   display:flex;
