@@ -297,16 +297,6 @@ nav .navbar-nav li a{
   padding-top:0;
 }
 
-.auth-login-wrapper {
-  height:100%;
-  width:100%;
-
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-}
-
 /* ---------- carts/cart.html ---------- */
 .carts-cart-wrapper .card {
   margin-bottom:1.3rem;
