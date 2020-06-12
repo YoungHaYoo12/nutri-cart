@@ -33,6 +33,10 @@ class User(db.Model, UserMixin):
                             cascade='all, delete-orphan')
 
   @property
+  def followed_carts(self):
+    return Cart.query.join(Follow, Follow.followed_id == Cart.user_id).filter(Follow.follower_id == self.id)
+
+  @property
   def password(self):
     raise AttributeError('password is not a readable attribute')
   
