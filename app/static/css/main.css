@@ -269,32 +269,9 @@ nav .navbar-nav li a{
   font-size:0.9rem;
 }
 
-.carts-list-wrapper .cards {
-  margin:2%;
-}
-
-.carts-list-wrapper .card img {
-  width:100px;
-}
-
-.carts-list-wrapper .card-title {
-  text-align:center;
-  margin-bottom:0;
-  padding-bottom:0;
-}
-
-.carts-list-wrapper .card-body {
-  padding-top:0;
-}
-
 .carts-list-wrapper .pagination {
     display:flex;
     justify-content:center;
-}
-
-.carts-list-wrapper .text-muted {
-  margin-top:0;
-  padding-top:0;
 }
 
 /* ---------- carts/cart.html ---------- */
@@ -304,4 +281,28 @@ nav .navbar-nav li a{
 
 .carts-cart-wrapper h1 {
   color:white;
+}
+
+/* ---------- carts/_carts.html ---------- */
+.carts {
+  margin:2%;
+}
+
+.carts .card img {
+  width:100px;
+}
+
+.carts .card-title {
+  text-align:center;
+  margin-bottom:0;
+  padding-bottom:0;
+}
+
+.carts .card-body {
+  padding-top:0;
+}
+
+.carts .text-muted {
+  margin-top:0;
+  padding-top:0;
 }
