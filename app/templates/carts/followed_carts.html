@@ -1,0 +1,17 @@
+{%  extends "base.html" %}
+{% import "_macros.html" as macros  %}
+{% block content %}
+<div class="carts-list-wrapper">
+  <div class="row">
+    <div class="col-12">
+      {% include 'carts/_carts.html' %}
+    </div>
+    <div class="col-12">
+    {% if pagination %}
+    <div class="pagination">
+        {{ macros.pagination_widget(pagination, 'carts.followed_carts') }}
+    </div>
+    </div>
+    {% endif %}
+  </div>
+{%  endblock %}

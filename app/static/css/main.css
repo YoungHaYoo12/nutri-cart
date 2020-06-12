@@ -279,6 +279,8 @@ nav .navbar-nav li a{
 
 .carts-list-wrapper .card-title {
   text-align:center;
+  margin-bottom:0;
+  padding-bottom:0;
 }
 
 .carts-list-wrapper .card-body {
@@ -288,6 +290,11 @@ nav .navbar-nav li a{
 .carts-list-wrapper .pagination {
     display:flex;
     justify-content:center;
+}
+
+.carts-list-wrapper .text-muted {
+  margin-top:0;
+  padding-top:0;
 }
 
 .auth-login-wrapper {
