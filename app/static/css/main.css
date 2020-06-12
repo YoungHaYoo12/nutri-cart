@@ -18,7 +18,7 @@ body {
 /* Navigation CSS */
 .navbar {
   font-weight:700;
-  letter-spacing: .1rem;
+  letter-spacing: .2rem;
   font-size: 1.1rem;
   margin-top:1.3rem;
   margin-bottom:1.3rem;
@@ -26,7 +26,7 @@ body {
 }
 
 .navbar-nav li {
-  padding-right: .7rem;
+  padding-right: 2rem;
 }
 
 nav .navbar-nav li .outer-link{
