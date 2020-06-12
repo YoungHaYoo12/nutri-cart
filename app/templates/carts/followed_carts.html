@@ -1,8 +1,12 @@
 {%  extends "base.html" %}
 {% import "_macros.html" as macros  %}
 {% block content %}
-<div class="carts-_carts-wrapper">
+<div class="carts-followed_carts-wrapper">
   <div class="row">
+    <div class="col-12">
+      <h1 class="header">Carts Of Users Followed By You</h1>
+      <hr class="my-4">
+    </div>
     <div class="col-12">
       {% include 'carts/_carts.html' %}
     </div>
@@ -14,4 +18,5 @@
     </div>
     {% endif %}
   </div>
+</div>
 {%  endblock %}
