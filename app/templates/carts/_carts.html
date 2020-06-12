@@ -8,6 +8,7 @@
               {% with counter=loop.index0 %}
               <div class="card-body">
                 <h1 class="card-title">Cart {{cart_counter[counter]}}</h1>
+                <p class="text-muted">@{{cart.user.username}}</p>
                 <p class="card-text">
                   Calories: {{cart.nf_calories|round(2)}} {{nutrient_categories_units.nf_calories}}
                 </p>
