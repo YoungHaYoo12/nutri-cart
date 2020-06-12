@@ -8,6 +8,12 @@ from datetime import datetime
 def load_user(user_id):
   return User.query.get(int(user_id))
 
+class Follow(db.Model):
+  __tablename__ = 'follows'
+  follower_id = db.Column(db.Integer, db.ForeignKey('users.id'), primary_key=True)
+  followed_id = db.Column(db.Integer, db.ForeignKey('users.id'),primary_key=True)
+  timestamp = db.Column(db.DateTime, default=datetime.utcnow)
+
 class User(db.Model, UserMixin):
   __tablename__ = 'users'
   id = db.Column(db.Integer, primary_key=True)
@@ -15,6 +21,16 @@ class User(db.Model, UserMixin):
   email = db.Column(db.String(64), unique=True, index=True)
   password_hash = db.Column(db.String(128))
   carts = db.relationship('Cart', backref='user', lazy='dynamic',cascade="all, delete-orphan")
+  followed = db.relationship('Follow',
+                            foreign_keys=[Follow.follower_id],
+                            backref=db.backref('follower',lazy='joined'),
+                            lazy='dynamic',
+                            cascade='all, delete-orphan')
+  followers = db.relationship('Follow',
+                            foreign_keys=[Follow.followed_id],
+                            backref=db.backref('followed',lazy='joined'),
+                            lazy='dynamic',
+                            cascade='all, delete-orphan')
 
   @property
   def password(self):
@@ -29,6 +45,25 @@ class User(db.Model, UserMixin):
 
   def __repr__(self):
     return f"<User {self.username}>"
+
+  # Functions related to follows
+  def is_following(self,user):
+    return self.followed.filter_by(followed_id=user.id).first() is not None
+  
+  def is_followed_by(self,user):
+    return self.followers.filter_by(follower_id=user.id).first() is not None
+  
+  def follow(self,user):
+    if not self.is_following(user):
+      f = Follow(follower=self,followed=user)
+      db.session.add(f)
+      db.session.commit()
+  
+  def unfollow(self,user):
+    f = self.followed.filter_by(followed_id=user.id).first()
+    if f:
+      db.session.delete(f)
+      db.session.commit()
 
 class FoodItem(db.Model):
   __tablename__ = 'food_items'
