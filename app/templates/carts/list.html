@@ -3,11 +3,42 @@
 {% block content %}
 <div class="carts-list-wrapper">
   <div class="row">
-    <h1 class="header col-12">Carts for @{{user.username}}</h1>
     <div class="col-12">
+    <h1 class="header">Carts for @{{user.username}}</h1>
+    <!-- Follow and Unfollow buttons -->
+      {% if current_user.is_authenticated and current_user != user%}
+        {% if not current_user.is_following(user) %}
+          <a class="follow-btn btn btn-primary" href="{{url_for('core.follow',username=user.username)}}"
+          >
+          Follow
+          </a>
+        {% else %}
+          <a class="follow-btn btn btn-primary" href="{{url_for('core.unfollow',username=user.username)}}"
+          >
+          Unfollow
+          </a>
+        {% endif %}
+      {% endif %}
+    </div>
+    <!-- Follow Info -->
+    <div class="col-12">
+      <div class="follow-info">
+        <a class="">Followers: <span class="badge badge-light">{{user.followers.count()}}</span></a>
+        <a class="">| Following: <span class="badge badge-light">{{user.followed.count()}}</span></a>
+        {% if current_user.is_authenticated and user!= current_user and
+        user.is_following(current_user) %}
+        | <span class="label label-default">Follows you</span>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Add Cart and Sort Buttons -->
+    <div class="col-12">
+
       {% if current_user == user %}
       <a class="btn btn-primary add-button" href="{{url_for('carts.add')}}">Add Cart</a>
       {% endif %}
+
   <!-- Example single danger button -->
       <div class="btn-group dropright">
         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">

@@ -255,6 +255,18 @@ nav .navbar-nav li a{
 
 .carts-list-wrapper .header {
   color:white;
+  display:inline-block;
+  margin-right:0.7rem;
+}
+
+.carts-list-wrapper .follow-btn {
+  margin-bottom:12px;
+}
+
+.carts-list-wrapper .follow-info {
+  margin-bottom:1rem;
+  color:#b8b8b8;
+  font-size:0.9rem;
 }
 
 .carts-list-wrapper .cards {
