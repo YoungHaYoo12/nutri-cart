@@ -60,6 +60,84 @@ class FlaskCoreTestCase(FlaskClientTestCase):
     response4 = self.client.get(url_for('core.users',username='two'))
     data4 = response4.get_data(as_text=True)
     self.assertTrue('No Results Returned.' in data4)
+  
+  def test_follow_page(self):
+    user1 = User(email='one@one.com',username='one',password='one')
+    user2 = User(email='two@two.com',username='two',password='two')
+    db.session.add_all([user1,user2])
+    db.session.commit()
+    
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'one@one.com', 
+        'username':'one',
+        'password': 'one' 
+      }
+      )
+
+      # test redirect when user does not exist
+      response1 = self.client.get(url_for('core.follow',username='ten'),follow_redirects=True)
+      data1 = response1.get_data(as_text=True)
+      self.assertTrue('Invalid User' in data1)
+      self.assertTrue('search-box' in data1)
+
+      # successful follow request
+      response2 = self.client.get(url_for('core.follow',username='two'),follow_redirects=True)
+      data2 = response2.get_data(as_text=True)
+      self.assertTrue('You are now following two' in data2)
+      one = User.query.filter_by(username='one').first()
+      two = User.query.filter_by(username='two').first()
+      self.assertTrue(one.is_following(two))
+      self.assertTrue(two.is_followed_by(one))
+
+      # test redirect when current user is already following user
+      response3 = self.client.get(url_for('core.follow',username='two'),follow_redirects=True)
+      data3 = response3.get_data(as_text=True)
+      self.assertTrue('You are already following this user' in data3)
+      self.assertTrue(one.is_following(two))
+      self.assertTrue(two.is_followed_by(one))
+
+  def test_unfollow_page(self):
+    user1 = User(email='one@one.com',username='one',password='one')
+    user2 = User(email='two@two.com',username='two',password='two')
+    db.session.add_all([user1,user2])
+    db.session.commit()
+    user1.follow(user2)
+    db.session.commit()
+
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'one@one.com', 
+        'username':'one',
+        'password': 'one' 
+      }
+      )
+
+      # test redirect when user does not exist
+      response1 = self.client.get(url_for('core.unfollow',username='ten'),follow_redirects=True)
+      data1 = response1.get_data(as_text=True)
+      self.assertTrue('Invalid User' in data1)
+      self.assertTrue('search-box' in data1)
+
+      # successful unfollow request
+      one = User.query.filter_by(username='one').first()
+      two = User.query.filter_by(username='two').first()
+      self.assertTrue(one.is_following(two))
+      self.assertTrue(two.is_followed_by(one))
+      response2 = self.client.get(url_for('core.unfollow',username='two'),follow_redirects=True)
+      data2 = response2.get_data(as_text=True)
+      self.assertTrue('You are no longer following two' in data2)
+      self.assertFalse(one.is_following(two))
+      self.assertFalse(two.is_followed_by(one))
+
+      # test redirect when current user is not currently following user
+      response3 = self.client.get(url_for('core.unfollow',username='two'),follow_redirects=True)
+      data3 = response3.get_data(as_text=True)
+      self.assertTrue('You are currently not following this user' in data3)
+      self.assertFalse(one.is_following(two))
+      self.assertFalse(two.is_followed_by(one))
 
 # test class for 'foods' blueprint  
 class FlaskFoodsTestCase(FlaskClientTestCase):
