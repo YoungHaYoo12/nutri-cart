@@ -2,6 +2,7 @@ from app import db, login_manager
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from decimal import Decimal
+from datetime import datetime
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -72,6 +73,7 @@ class Cart(db.Model):
   __tablename__ = 'carts'
 
   id = db.Column(db.Integer, primary_key=True)
+  timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
   foods = db.relationship('FoodItem', backref='cart', lazy='dynamic',cascade="all, delete-orphan")
   user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
 
