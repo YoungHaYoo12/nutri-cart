@@ -28,7 +28,7 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="outer-link nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Search
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -40,7 +40,7 @@
 
             {% if current_user.is_authenticated %}
             <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <a class="outer-link nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                 Carts
               </a>
               <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -51,14 +51,14 @@
             </li>
 
             <li class="nav-item">
-              <a class="nav-link" href="{{url_for('auth.logout')}}">Sign Out</a>
+              <a class="outer-link nav-link" href="{{url_for('auth.logout')}}">Sign Out</a>
             </li>
             {% else %}
             <li class="nav-item">
-              <a class="nav-link" href="{{url_for('auth.login')}}">Sign In</a>
+              <a class="outer-link nav-link" href="{{url_for('auth.login')}}">Sign In</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{{url_for('auth.register')}}">Register</a>
+              <a class="outer-link nav-link" href="{{url_for('auth.register')}}">Register</a>
             </li>            
             {% endif %}                                
           </ul>

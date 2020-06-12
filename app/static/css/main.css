@@ -29,8 +29,12 @@ body {
   padding-right: .7rem;
 }
 
-nav .navbar-nav li a{
+nav .navbar-nav li .outer-link{
   color: white !important;
+}
+
+.navbar .dropdown-item {
+  color:#696969;
 }
 
 /* Landing Page */
