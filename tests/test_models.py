@@ -1,8 +1,9 @@
 import unittest
 from sqlalchemy.exc import IntegrityError
 from app import create_app, db
-from app.models import User,FoodItem,Cart
+from app.models import User,FoodItem,Cart,Follow
 from decimal import Decimal
+from datetime import datetime
 
 class FlaskTestCase(unittest.TestCase):
   def setUp(self):
@@ -69,6 +70,48 @@ class UserModelTestCase(FlaskTestCase):
     with self.assertRaises(IntegrityError):
       db.session.add(u2)
       db.session.commit()
+  
+  def test_follows(self):
+    u1 = User(email='one@one.com', username='one', password='one')
+    u2 = User(email='two@two.com',username='two',password='two')
+    db.session.add_all([u1,u2])
+    db.session.commit()
+    
+    # test that users are not following one another
+    self.assertFalse(u1.is_following(u2))
+    self.assertFalse(u1.is_followed_by(u2))
+
+    # test timestamp column of Follow model and follow methods
+    timestamp_before = datetime.utcnow()
+    u1.follow(u2)
+    db.session.add_all([u1,u2])
+    db.session.commit()
+    timestamp_after = datetime.utcnow()
+    self.assertTrue(u1.is_following(u2))
+    self.assertFalse(u1.is_followed_by(u2))
+    self.assertFalse(u2.is_following(u1))
+    self.assertTrue(u2.is_followed_by(u1))
+    f = u1.followed.all()[-1]
+    self.assertTrue(f.followed == u2)
+    self.assertTrue(timestamp_before <= f.timestamp <= timestamp_after)
+    f = u2.followers.all()[-1]
+    self.assertTrue(f.follower == u1)
+
+    # test unfollow method
+    u1.unfollow(u2)
+    db.session.add_all([u1,u2])
+    db.session.commit()
+    self.assertFalse(u1.is_following(u2))
+    self.assertFalse(u2.is_followed_by(u1))
+
+    # test cascade
+    u2.follow(u1)
+    db.session.add_all([u1,u2])
+    db.session.commit()
+    db.session.delete(u2)
+    db.session.commit()
+    self.assertTrue(Follow.query.count() == 0)
+
 
 class FoodItemModelTestCase(FlaskTestCase):
   def test_decimal_fields(self):
