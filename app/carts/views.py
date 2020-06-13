@@ -1,8 +1,8 @@
 from app import db
 from app.carts import carts
-from app.models import Cart, User
+from app.models import Cart, User, FoodItem
 from flask_login import current_user,login_required
-from flask import render_template, redirect, url_for, request, abort
+from flask import render_template, redirect, url_for, request, abort,flash
 from nutritionix import nutrient_categories_units
 
 @carts.route('/list/<username>')
@@ -78,3 +78,38 @@ def delete(id):
   db.session.delete(cart)
   db.session.commit()
   return redirect(url_for('carts.list',username=current_user.username))
+
+@carts.route('/clone/<int:id>')
+@login_required
+def clone(id):
+  cart = Cart.query.get_or_404(id)
+  foods = cart.foods.all()
+
+  # clone cart
+  cart_copy = Cart()
+  cart_copy.user = current_user
+
+  for food in foods:
+    food_copy = FoodItem(name=food.name,
+                        img_url=food.img_url,
+                        nf_calories=food.nf_calories,
+                        nf_total_fat=food.nf_total_fat,
+                        nf_saturated_fat=food.nf_saturated_fat,
+                        nf_cholesterol=food.nf_cholesterol,
+                        nf_sodium=food.nf_sodium,
+                        nf_total_carbohydrate=food.nf_total_carbohydrate,
+                        nf_dietary_fiber=food.nf_dietary_fiber,
+                        nf_sugars=food.nf_sugars,
+                        nf_protein=food.nf_protein,
+                        serving_unit=food.serving_unit,
+                        serving_qty=food.serving_qty
+                        )
+    food_copy.cart = cart_copy
+    db.session.add(food_copy)
+
+  cart_copy.update_nutrients()
+  db.session.add(cart_copy)
+  db.session.commit()
+
+  flash('Cart Has Been Cloned And Added To Your Carts')
+  return redirect(url_for('carts.cart',id=cart_copy.id))
