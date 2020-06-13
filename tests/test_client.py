@@ -834,7 +834,43 @@ class FlaskCartsTestCase(unittest.TestCase):
 
       self.client.get(url_for('carts.add'))
       self.assertTrue(len(current_user.carts.all()) == 6)
-  
+
+  def test_carts_clone(self):
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'two@two.com', 
+        'username':'two',
+        'password': 'two' 
+      }
+      )
+
+      # abort if cart does not exist
+      response = self.client.get(url_for('carts.clone',id=200))
+      self.assertTrue(response.status_code==404)
+
+      # before cloning
+      response = self.client.get(url_for('carts.list',username='two'))
+      data = response.get_data(as_text=True)
+      self.assertTrue('Cart 1' in data)
+      self.assertFalse('Cart 2' in data)
+
+      # after cloning
+      self.client.get(url_for('carts.clone',id=1),follow_redirects=True)
+      response = self.client.get(url_for('carts.list',username='two'))
+      data = response.get_data(as_text=True)
+      self.assertTrue('Cart 1' in data)
+      self.assertTrue('Cart 2' in data)
+      self.assertTrue('Calories: 12.00 kcal' in data)
+      self.assertTrue('Total Fat: 14.00 g' in data)
+      self.assertTrue('Saturated Fat: 18.00 g' in data)
+      self.assertTrue('Cholesterol: 16.00 mg' in data)
+      self.assertTrue('Sodium: 20.00 mg' in data)
+      self.assertTrue('Total Carbohydrate: 22.00 g' in data)
+      self.assertTrue('Dietary Fiber: 24.00 g' in data)
+      self.assertTrue('Sugars: 26.00 g' in data)
+      self.assertTrue('Protein: 28.00 g' in data)
+
   def test_carts_cart(self):
     with self.client:
       self.client.post(url_for('auth.login'), data=
