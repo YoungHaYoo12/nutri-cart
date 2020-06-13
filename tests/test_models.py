@@ -71,6 +71,25 @@ class UserModelTestCase(FlaskTestCase):
       db.session.add(u2)
       db.session.commit()
   
+  def test_followed_carts(self):
+    u1 = User(email='one@one.com', username='one', password='one')
+    u2 = User(email='two@two.com',username='two',password='two')
+    cart1 = Cart()
+    cart2 = Cart()
+    cart1.user=u2
+    cart2.user=u2
+    db.session.add_all([u1,u2])
+    db.session.commit()
+
+    # no carts when user is not following other users
+    followed_carts = u1.followed_carts.all()
+    self.assertTrue(len(followed_carts) == 0)
+
+    # test followed_carts when following other user
+    u1.follow(u2)
+    followed_carts = u1.followed_carts.all()
+    self.assertTrue(len(followed_carts) == 2)
+
   def test_follows(self):
     u1 = User(email='one@one.com', username='one', password='one')
     u2 = User(email='two@two.com',username='two',password='two')
