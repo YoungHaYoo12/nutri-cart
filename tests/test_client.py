@@ -23,7 +23,7 @@ class FlaskClientTestCase(unittest.TestCase):
 
 # test class for 'core' blueprint
 class FlaskCoreTestCase(FlaskClientTestCase):
-  def test_core_index_page(self):
+  def test_core_index(self):
     # Form Validated
     response1 = self.client.post(url_for('core.index'),data= {
       'query': 'brownie'
@@ -36,7 +36,7 @@ class FlaskCoreTestCase(FlaskClientTestCase):
     })
     self.assertFalse(response2.status_code==302)
   
-  def test_core_users_page(self):
+  def test_core_users(self):
     # Form Validated
     response1 = self.client.post(url_for('core.users'),data= {
       'query': 'one'
@@ -62,7 +62,7 @@ class FlaskCoreTestCase(FlaskClientTestCase):
     data4 = response4.get_data(as_text=True)
     self.assertTrue('No Results Returned.' in data4)
   
-  def test_follow_page(self):
+  def test_core_follow(self):
     user1 = User(email='one@one.com',username='one',password='one')
     user2 = User(email='two@two.com',username='two',password='two')
     db.session.add_all([user1,user2])
@@ -99,7 +99,7 @@ class FlaskCoreTestCase(FlaskClientTestCase):
       self.assertTrue(one.is_following(two))
       self.assertTrue(two.is_followed_by(one))
 
-  def test_unfollow_page(self):
+  def test_core_unfollow(self):
     user1 = User(email='one@one.com',username='one',password='one')
     user2 = User(email='two@two.com',username='two',password='two')
     db.session.add_all([user1,user2])
@@ -142,7 +142,7 @@ class FlaskCoreTestCase(FlaskClientTestCase):
 
 # test class for 'foods' blueprint  
 class FlaskFoodsTestCase(FlaskClientTestCase):
-  def test_foods_list_page(self):
+  def test_foods_list(self):
     # Common Filter
     response1 = self.client.get(url_for('foods.list',food_name='Brownie',filter='common'))
     self.assertTrue(response1.status_code == 200)
