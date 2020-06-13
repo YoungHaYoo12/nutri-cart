@@ -17,7 +17,7 @@ def list(username,nutrient=None):
 
   # Order Carts (If sorting argument provided)
   if nutrient is None:
-    query = user.carts.order_by(Cart.id.asc())
+    query = user.carts.order_by(Cart.timestamp.desc())
   else:
     sort_options = {
       'nf_calories' : Cart.nf_calories,
