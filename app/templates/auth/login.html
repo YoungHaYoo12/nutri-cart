@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_macros.html" as macros  %}
 
 {% block content %}
 <div class="auth-login-wrapper"
@@ -12,10 +13,14 @@
           {{form.email.label}}
           {{form.email(class="form-control")}}
         </div>
+        {{macros.error_msg(form.email)}}
+
         <div class="form-group">
           {{form.password.label}}
           {{form.password(class="form-control")}}
         </div>
+        {{macros.error_msg(form.password)}}
+
         <div class="form-group form-check">
           {{form.remember_me(class="form-check-input")}}
           {{form.remember_me.label(class="form-check-label")}}

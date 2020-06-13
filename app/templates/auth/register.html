@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% import "_macros.html" as macros  %}
 
 {% block content %}
 <div class="auth-register-wrapper"
@@ -12,18 +13,25 @@
           {{form.email.label}}
           {{form.email(class="form-control")}}
         </div>
+        {{macros.error_msg(form.email)}}
+
         <div class="form-group">
           {{form.username.label}}
           {{form.username(class="form-control")}}
         </div>
+        {{macros.error_msg(form.username)}}
+
         <div class="form-group">
           {{form.password.label}}
           {{form.password(class="form-control")}}
         </div>
+        {{macros.error_msg(form.password)}}
+
         <div class="form-group">
           {{form.password2.label}}
           {{form.password2(class="form-control")}}
         </div>
+        {{macros.error_msg(form.password2)}}
 
         {{form.submit(class="btn btn-primary")}}
       </form>

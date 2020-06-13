@@ -42,3 +42,16 @@
   </form>
 </div>
 {% endmacro %}
+
+{% macro error_msg(field) %}
+  {% if field.errors %}
+  <div class="errors">
+    <div class="error-side"></div>
+    <div class="error-center">
+      {% for error in field.errors %}
+        {{error}}
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+{% endmacro %}
