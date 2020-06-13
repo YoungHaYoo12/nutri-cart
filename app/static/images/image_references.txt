@@ -5,3 +5,6 @@ https://upload.wikimedia.org/wikipedia/commons/c/c4/Noun_Project_vegetables_icon
 
 base_background.jpg:
 Photo by Luke Chesser on Unsplash
+
+cart.svg:
+https://svgsilh.com/image/2614160.html
