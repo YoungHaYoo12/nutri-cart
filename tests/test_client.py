@@ -767,6 +767,31 @@ class FlaskCartsTestCase(unittest.TestCase):
       response3 = self.client.get(url_for('carts.list',username='eight'))
       self.assertTrue(response3.status_code == 404)
 
+  def test_carts_followed_carts(self):
+    with self.client:
+      self.client.post(url_for('auth.login'), data=
+      { 
+        'email': 'two@two.com', 
+        'username':'two',
+        'password': 'two' 
+      }
+      )
+
+      # check that page is blank when current user is not following any other user
+      response1 = self.client.get(url_for('carts.followed_carts'))
+      data1 = response1.get_data(as_text=True)
+      self.assertFalse('Cart 1' in data1)
+      self.assertFalse('@one' in data1)
+
+      # check that carts of followed users appear 
+      self.client.get(url_for('core.follow',username='one'), follow_redirects=True)
+      response2 = self.client.get(url_for('carts.followed_carts'))
+      data2 = response2.get_data(as_text=True)
+      self.assertTrue('Cart 1' in data2)
+      self.assertTrue('Cart 2' in data2)
+      self.assertTrue('@one' in data2)
+
+
   def test_carts_delete(self):
     with self.client:
       self.client.post(url_for('auth.login'), data=
