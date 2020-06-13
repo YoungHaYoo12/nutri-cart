@@ -1,4 +1,5 @@
 import unittest
+from datetime import datetime
 from decimal import Decimal
 from flask import url_for
 from flask_login import current_user
@@ -731,6 +732,11 @@ class FlaskCartsTestCase(unittest.TestCase):
       self.assertFalse("Cart 5" in data1)
 
       # test that updated cart nutrients are displayed (from added food)
+      cart1 = Cart.query.get(1)
+      cart1.timestamp = datetime.utcnow()
+      db.session.commit()
+      response1 = self.client.get(url_for('carts.list',username='one'))
+      data1 = response1.get_data(as_text=True)
       self.assertTrue('Calories: 12.00 kcal' in data1)
       self.assertTrue('Total Fat: 14.00 g' in data1)
       self.assertTrue('Saturated Fat: 18.00 g' in data1)
