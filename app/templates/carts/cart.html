@@ -5,6 +5,9 @@
     <div class="row">
       <div class="col-12 text-center">
         <h1>Foods In Cart</h1>
+        {% if current_user.is_authenticated %}
+        <a href="{{url_for('carts.clone',id=cart.id)}}" class="btn btn-primary">Clone</a>
+        {% endif %}
         <hr class="my-4">
       </div>
       {% for food in foods %}
